@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/models/Address.dart';
 import 'package:thrifters_united/models/Order.dart';
 import 'package:thrifters_united/models/Product.dart';
@@ -20,6 +21,10 @@ class OrderAPI with ChangeNotifier {
   void addProducts(List<Product> value) {
     products?.clear();
     products?.addAll(value);
+    Price = 0;
+    value.forEach((product) {
+      Price += product.price;
+    });
     notifyListeners();
   }
 
@@ -56,13 +61,18 @@ class OrderAPI with ChangeNotifier {
           fromFirestore: (snapshot, _) => Order.fromJson(snapshot.data()),
           toFirestore: (order, _) => order.toJson(),
         );
-    await UsersRef.add(
-      Order(
-        address: currentOrder.address,
-        products: currentOrder.products,
-        paymentMethod: currentOrder.paymentMethod,
-        price: Price,
-      ),
-    );
+    await UsersRef.add(currentOrder);
+    await UserAPI.clearCart();
+  }
+
+  static Stream<QuerySnapshot<Order>> loadOrders({String userID}) {
+    final UsersRef = FirebaseFirestore.instance
+        .collection('users/$userID/orders')
+        .withConverter<Order>(
+          fromFirestore: (snapshot, _) => Order.fromJson(snapshot.data()),
+          toFirestore: (order, _) => order.toJson(),
+        );
+    Stream<QuerySnapshot<Order>> orders = UsersRef.snapshots();
+    return orders;
   }
 }

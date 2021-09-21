@@ -65,6 +65,23 @@ class UserAPI {
     UsersRef.doc(product.productId).delete();
   }
 
+  static Future clearCart() async {
+    String userID = await auth.currentUser.uid;
+    final UsersRef = FirebaseFirestore.instance
+        .collection('users/$userID/cart')
+        .withConverter<Product>(
+          fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()),
+          toFirestore: (product, _) => product.toJson(),
+        );
+    UsersRef.get().then(
+      (snapshot) {
+        for (DocumentSnapshot ds in snapshot.docs) {
+          ds.reference.delete();
+        }
+      },
+    );
+  }
+
   static Future<List<QueryDocumentSnapshot>> checkout(String userID) async {
     final UsersRef = FirebaseFirestore.instance
         .collection('users/$userID/cart')

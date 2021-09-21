@@ -60,7 +60,7 @@ class Order {
             ? List<dynamic>.from(products.map((x) => x.toJson()))
             : <Product>[],
         "shippingFee": shippingFee,
-        "status": status,
+        "status": status.toString(),
         "paymentMethod": paymentMethod.toString(),
         "orderedOn": Utils.fromDateTimeToJson(orderedOn),
         "deliveredAt": Utils.fromDateTimeToJson(deliveredAt),

@@ -70,19 +70,6 @@ class _KidsState extends State<Kids> {
             ],
           ),
         ),
-        Expanded(
-          child: GridView(
-            padding: EdgeInsets.zero,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 1,
-            ),
-            scrollDirection: Axis.vertical,
-            children: [],
-          ),
-        )
       ],
     );
   }

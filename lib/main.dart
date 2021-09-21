@@ -11,6 +11,7 @@ import 'package:thrifters_united/Screens/Homescreen.dart';
 import 'package:thrifters_united/Screens/Profile.dart';
 import 'package:thrifters_united/Screens/Wishlist.dart';
 import 'package:thrifters_united/pages/Profile/MyAdresses.dart';
+import 'package:thrifters_united/pages/Profile/MyOrders.dart';
 import 'package:thrifters_united/pages/Profile/MyProfile.dart';
 
 import 'Screens/Mainscreen.dart';
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
               '/profile': (context) => Profile(),
               '/profile/MyProfile': (context) => MyProfile(),
               '/profile/MyAddresses': (context) => MyAddresses(),
+              '/profile/MyOrders': (context) => MyOrders(),
             },
           );
         }

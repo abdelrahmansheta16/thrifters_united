@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
+import 'package:thrifters_united/Screens/Mainscreen.dart';
 import 'package:thrifters_united/customUi/CartProductContainer.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
@@ -282,7 +283,9 @@ class _PlaceOrderState extends State<PlaceOrder> {
                                         ),
                                       ),
                                       Text(
-                                        value.getTax(value.products).toString(),
+                                        value
+                                            .getTax(value.products)
+                                            .toStringAsFixed(2),
                                         textAlign: TextAlign.end,
                                         style:
                                             FlutterFlowTheme.subtitle2.override(
@@ -391,12 +394,18 @@ class _PlaceOrderState extends State<PlaceOrder> {
               onPressed: () async {
                 await value.addOrder(
                     currentOrder: Order(
+                      shippingFee: 15,
+                      status: Status.BeingProcessed,
+                      orderedOn: DateTime.now(),
                       address: value.address,
                       products: value.products,
                       paymentMethod: value.method,
                       price: value.Price,
                     ),
                     userID: widget.userID);
+                final BottomNavigationBar navigationBar =
+                    globalKey.currentWidget;
+                navigationBar.onTap(0);
                 Navigator.popUntil(context, ModalRoute.withName('/'));
               },
               child: Text(
