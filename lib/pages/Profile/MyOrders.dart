@@ -41,19 +41,26 @@ class _MyOrdersState extends State<MyOrders> {
           if (model.user == null) {
             return GuestUser();
           }
-          return StreamBuilder<QuerySnapshot>(
-              stream: OrderAPI.loadOrders(userID: model.user.uid),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Something went wrong');
-                }
+          return StreamBuilder<QuerySnapshot<Order>>(
+            stream: OrderAPI.loadOrders(userID: model.user.uid),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Something went wrong');
+              }
 
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                return ListView(
-                  children: snapshot.data.docs.map((DocumentSnapshot document) {
-                    Order order = document.data();
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              List<Order> orders =
+                  snapshot.data.docs.map((DocumentSnapshot document) {
+                Order order;
+                order = document.data();
+                order.orderID = document.id;
+                return order;
+              }).toList();
+              return ListView.builder(
+                  itemCount: orders.length,
+                  itemBuilder: (BuildContext context, int index) {
                     return MyProfileContainer(
                       widget: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -70,7 +77,7 @@ class _MyOrdersState extends State<MyOrders> {
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                ' : ${model.user.displayName}',
+                                ' : ${orders[index].price}',
                                 style: FlutterFlowTheme.bodyText1.override(
                                   fontFamily: 'Poppins',
                                 ),
@@ -87,7 +94,7 @@ class _MyOrdersState extends State<MyOrders> {
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                ' : ${model.user.displayName}',
+                                ' : ${orders[index].orderID}',
                                 style: FlutterFlowTheme.bodyText1.override(
                                   fontFamily: 'Poppins',
                                 ),
@@ -130,11 +137,11 @@ class _MyOrdersState extends State<MyOrders> {
                           )
                         ],
                       ),
-                      string: 'Account info',
+                      string: 'Order #' + index.toString(),
                     );
-                  }).toList(),
-                );
-              });
+                  });
+            },
+          );
         },
       ),
     );
