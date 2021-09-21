@@ -6,14 +6,14 @@ import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 
 import '../../FirebaseAPI/AuthenticationAPI.dart';
 
-class MyProfile extends StatefulWidget {
-  MyProfile({Key key}) : super(key: key);
+class MyOrder extends StatefulWidget {
+  MyOrder({Key key}) : super(key: key);
 
   @override
-  _MyProfileState createState() => _MyProfileState();
+  _MyOrderState createState() => _MyOrderState();
 }
 
-class _MyProfileState extends State<MyProfile> {
+class _MyOrderState extends State<MyOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,16 +21,19 @@ class _MyProfileState extends State<MyProfile> {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: true,
-        title: Text(
-          'MyProfile',
-          textAlign: TextAlign.center,
-          style: FlutterFlowTheme.bodyText1.override(
-            fontFamily: 'Poppins',
-            fontSize: 20,
+        title: Align(
+          alignment: Alignment(-1.2, 0),
+          child: Text(
+            'MyOrder',
+            textAlign: TextAlign.center,
+            style: FlutterFlowTheme.bodyText1.override(
+              fontFamily: 'Poppins',
+              fontSize: 20,
+            ),
           ),
         ),
         actions: [],
-        centerTitle: true,
+        centerTitle: false,
         elevation: 1,
       ),
       body: Consumer<AuthenticationAPI>(
