@@ -46,8 +46,10 @@ class Order {
                 json["products"].map((x) => Product.fromJson(x)))
             : <Product>[],
         shippingFee: json["shippingFee"],
-        status: json["status"],
-        paymentMethod: json["paymentMethod"],
+        status: Status.values
+            .firstWhere((element) => element.toString() == json["status"]),
+        paymentMethod: PaymentMethod.values.firstWhere(
+            (element) => element.toString() == json["paymentMethod"]),
         orderedOn: Utils.toDateTime(json["orderedOn"]),
         deliveredAt: Utils.toDateTime(json["deliveredAt"]),
         price: json["price"].toDouble(),

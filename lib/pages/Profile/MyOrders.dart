@@ -137,7 +137,7 @@ class _MyOrdersState extends State<MyOrders> {
                           )
                         ],
                       ),
-                      string: 'Order #' + index.toString(),
+                      string: 'Order #' + (index + 1).toString(),
                     );
                   });
             },
