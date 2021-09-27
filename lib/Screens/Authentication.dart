@@ -26,40 +26,21 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.06),
-        child: AppBar(
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          title: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                child: Icon(
-                  Icons.arrow_back_sharp,
-                  color: Colors.black,
-                  size: 24,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                child: Text(
-                  'THRIFTERS',
-                  style: FlutterFlowTheme.bodyText1.override(
-                    fontFamily: 'Raleway',
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              )
-            ],
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        automaticallyImplyLeading: true,
+        title: Text(
+          'THRIFTERS',
+          style: FlutterFlowTheme.bodyText1.override(
+            fontFamily: 'Raleway',
+            color: Colors.black,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
           ),
-          actions: [],
-          elevation: 0,
         ),
+        centerTitle: true,
+        elevation: 0,
       ),
       backgroundColor: Colors.white,
       body: Column(

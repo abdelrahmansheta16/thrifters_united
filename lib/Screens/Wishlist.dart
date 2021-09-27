@@ -5,6 +5,7 @@ import 'package:thrifters_united/Screens/Homescreen.dart';
 import 'package:thrifters_united/Screens/Mainscreen.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_widgets.dart';
+import 'package:thrifters_united/pages/PlacePicker.dart';
 
 import '../FirebaseAPI/AuthenticationAPI.dart';
 

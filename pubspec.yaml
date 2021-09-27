@@ -24,11 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
-  vertical_tabs: ^0.2.0
-  google_fonts: ^2.1.0
+  cupertino_icons:
+  vertical_tabs:
+  google_fonts:
   auto_size_text:
-  cached_network_image: ^3.1.0
+  cached_network_image:
   font_awesome_flutter:
   geolocator:
   intl:
@@ -38,7 +38,7 @@ dependencies:
   firebase_core:
   firebase_auth:
   cloud_firestore:
-  provider: ^5.0.0
+  provider:
   google_sign_in:
   flutter_facebook_auth:
   smooth_page_indicator:

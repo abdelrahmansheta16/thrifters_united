@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_widgets.dart';
-import 'package:thrifters_united/pages/Profile/MyAdresses.dart';
+import 'package:thrifters_united/pages/Profile/MyAddresses/MyAdresses.dart';
 import '../FirebaseAPI/AuthenticationAPI.dart';
 
 class Profile extends StatefulWidget {

@@ -65,7 +65,7 @@ class OrderAPI with ChangeNotifier {
     await UserAPI.clearCart();
   }
 
-  static Stream<QuerySnapshot<Order>> loadOrders({String userID}) {
+  static Stream<QuerySnapshot> loadOrders({String userID}) {
     final UsersRef = FirebaseFirestore.instance
         .collection('users/$userID/orders')
         .withConverter<Order>(
