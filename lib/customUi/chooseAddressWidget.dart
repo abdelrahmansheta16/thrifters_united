@@ -45,13 +45,13 @@ class _ChooseAddressWidgetState extends State<ChooseAddressWidget> {
                 subtitle: Column(
                   children: [
                     Text(
-                      address.city,
+                      address.StreetName,
                       style: FlutterFlowTheme.subtitle2.override(
                         fontFamily: 'Poppins',
                       ),
                     ),
                     Text(
-                      address.postalCode,
+                      address.floorNumber,
                       style: FlutterFlowTheme.subtitle2.override(
                         fontFamily: 'Poppins',
                       ),

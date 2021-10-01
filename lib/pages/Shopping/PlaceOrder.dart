@@ -133,7 +133,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                                     ),
                                   ),
                                   subtitle: Text(
-                                    value.address.city,
+                                    value.address.StreetName,
                                     style: FlutterFlowTheme.subtitle2.override(
                                       fontFamily: 'Poppins',
                                     ),

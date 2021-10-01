@@ -40,8 +40,9 @@ class _MyAddressesState extends State<MyAddresses> {
               onPressed: () async {
                 widget.userID == null
                     ? null
-                    : await UserAPI.addAddresses(
-                        UserAPI.address, widget.userID);
+                    : Navigator.pushNamed(
+                        context, '/profile/MyAddresses/AddAddress',
+                        arguments: widget.userID);
               },
               child: Text(
                 'Add',
@@ -66,18 +67,26 @@ class _MyAddressesState extends State<MyAddresses> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   }
-                  return SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children:
-                          snapshot.data.docs.map((DocumentSnapshot document) {
-                        Address address;
-                        address = document.data();
-                        address.AddressID = document.id;
-                        return AddressWidget(address: address);
-                      }).toList(),
-                    ),
-                  );
+                  if (!snapshot.hasData) {
+                    return Container(
+                      color: Colors.white,
+                    );
+                  }
+                  List<Address> addresses =
+                      snapshot.data.docs.map((DocumentSnapshot document) {
+                    Address address;
+                    address = document.data();
+                    address.AddressID = document.id;
+                    return address;
+                  }).toList();
+                  return ListView.builder(
+                      itemCount: addresses.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Address currentAddress = addresses[index];
+                        return AddressWidget(
+                          address: currentAddress,
+                        );
+                      });
                 }),
       ),
     );

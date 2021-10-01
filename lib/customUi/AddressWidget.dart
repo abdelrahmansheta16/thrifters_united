@@ -21,7 +21,7 @@ class AddressWidget extends StatelessWidget {
         children: [
           ListTile(
             title: Text(
-              address.AddressID,
+              address?.AddressID,
               style: FlutterFlowTheme.title3.override(
                 fontFamily: 'Poppins',
               ),
@@ -29,13 +29,13 @@ class AddressWidget extends StatelessWidget {
             subtitle: Column(
               children: [
                 Text(
-                  address.city,
+                  address?.StreetName,
                   style: FlutterFlowTheme.subtitle2.override(
                     fontFamily: 'Poppins',
                   ),
                 ),
                 Text(
-                  address.postalCode,
+                  address?.floorNumber,
                   style: FlutterFlowTheme.subtitle2.override(
                     fontFamily: 'Poppins',
                   ),

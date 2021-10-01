@@ -1,10 +1,14 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:thrifters_united/pages/Profile/MyAddresses/MapsAPI.dart';
+import 'package:provider/provider.dart';
+import 'package:thrifters_united/FirebaseAPI/AddressAPI.dart';
+import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
+import 'package:thrifters_united/pages/Maps/MapsAPI.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_widgets.dart';
 
@@ -16,6 +20,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  String userId;
   static Position position;
   Completer<GoogleMapController> _mapController = Completer();
 
@@ -93,7 +98,12 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        print(_cameraPosition.target);
+                        Provider.of<AddressAPI>(context, listen: false)
+                            .setGeoPoint(
+                          GeoPoint(_cameraPosition.target.latitude,
+                              _cameraPosition.target.longitude),
+                        );
+                        Navigator.pop(context);
                       },
                       title: StreamBuilder<List<Placemark>>(
                           stream: placemarkFromCoordinates(
@@ -151,6 +161,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    userId = ModalRoute.of(context).settings.arguments.toString();
     return Scaffold(
       body: position != null && _cameraPosition != null
           ? buildMap()

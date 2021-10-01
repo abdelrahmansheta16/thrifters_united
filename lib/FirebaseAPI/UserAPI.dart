@@ -7,12 +7,6 @@ import 'package:thrifters_united/models/User.dart';
 class UserAPI {
   static final FirebaseAuth auth = FirebaseAuth.instance;
 
-  static Address address = Address(
-      streetAddress: 'streetAddress',
-      state: 'state',
-      postalCode: 'postalCode',
-      city: 'city');
-
   static Stream<QuerySnapshot<USER>> loadUsers() {
     final UsersRef =
         FirebaseFirestore.instance.collection('users').withConverter<USER>(
@@ -119,16 +113,6 @@ class UserAPI {
         );
     Stream<QuerySnapshot<Address>> cart = UsersRef.snapshots();
     return cart;
-  }
-
-  static Future addAddresses(Address address, String userID) async {
-    final UsersRef = FirebaseFirestore.instance
-        .collection('users/$userID/addresses')
-        .withConverter<Address>(
-          fromFirestore: (snapshot, _) => Address.fromJson(snapshot.data()),
-          toFirestore: (address, _) => address.toJson(),
-        );
-    await UsersRef.doc(address.AddressID).set(address);
   }
 
   static Future removeAddress({Address address}) async {

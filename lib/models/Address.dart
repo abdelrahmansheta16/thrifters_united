@@ -13,35 +13,67 @@ String addressToJson(Address data) => json.encode(data.toJson());
 class Address {
   Address({
     this.AddressID,
-    this.streetAddress,
-    this.city,
-    this.state,
-    this.postalCode,
+    this.Area,
+    this.StreetName,
+    this.BuildingName,
+    this.floorNumber,
+    this.buildingType,
     this.location,
+    this.addressName,
+    this.apartmentNumber,
+    this.phoneNumber,
+    this.Landline,
+    this.Landmark,
   });
 
   String AddressID;
-  String streetAddress;
-  String city;
-  String state;
-  String postalCode;
+  String Area;
+  String StreetName;
+  String BuildingName;
+  String floorNumber;
+  String apartmentNumber;
+  String addressName;
+  String Landmark;
+  String phoneNumber;
+  String Landline;
   GeoPoint location;
+  String buildingType;
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
-        AddressID: json["AddressID"],
-        streetAddress: json["streetAddress"],
-        city: json["city"],
-        state: json["state"],
-        postalCode: json["postalCode"],
-        location: json["location"],
+      AddressID: json["AddressID"],
+      Area: json["Area"],
+      StreetName: json["StreetName"],
+      BuildingName: json["BuildingName"],
+      floorNumber: json["floorNumber"],
+      apartmentNumber: json["apartmentNumber"],
+      addressName: json["addressName"],
+      Landmark: json["Landmark"],
+      Landline: json["Landline"],
+      location: json["location"],
+      phoneNumber: json["phoneNumber"],
+      buildingType: json["buildingType"]
+      // buildingType: BuildingType.values.firstWhere(
+      //     (element) => element.toString() == json["buildingType"]),
       );
 
   Map<String, dynamic> toJson() => {
         "AddressID": AddressID,
-        "streetAddress": streetAddress,
-        "city": city,
-        "state": state,
-        "postalCode": postalCode,
+        "Area": Area,
+        "StreetName": StreetName,
+        "BuildingName": BuildingName,
+        "floorNumber": floorNumber,
+        "addressName": addressName,
+        "apartmentNumber": apartmentNumber,
+        "Landline": Landline,
+        "Landmark": Landmark,
+        "phoneNumber": phoneNumber,
         "location": GeoPoint(location.latitude, location.longitude),
+        "buildingType": buildingType,
       };
+}
+
+enum BuildingType {
+  Apartment,
+  Villa,
+  Office,
 }

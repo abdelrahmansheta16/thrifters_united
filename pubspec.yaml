@@ -23,12 +23,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   cupertino_icons:
   vertical_tabs:
   google_fonts:
   auto_size_text:
   cached_network_image:
+  pin_code_fields: ^7.3.0
   font_awesome_flutter:
   geolocator:
   intl:
@@ -44,6 +47,7 @@ dependencies:
   smooth_page_indicator:
   flutter_polyline_points:
   google_maps_flutter:
+  country_code_picker: ^2.0.2
   geocoding:
   location:
   http:
