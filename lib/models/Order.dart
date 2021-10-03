@@ -32,8 +32,8 @@ class Order {
   Address address;
   List<dynamic> products;
   double shippingFee;
-  Status status;
-  PaymentMethod paymentMethod;
+  String status;
+  String paymentMethod;
   DateTime orderedOn;
   DateTime deliveredAt;
   double price;
@@ -46,13 +46,11 @@ class Order {
                 json["products"].map((x) => Product.fromJson(x)))
             : <Product>[],
         shippingFee: json["shippingFee"],
-        status: Status.values
-            .firstWhere((element) => element.toString() == json["status"]),
-        paymentMethod: PaymentMethod.values.firstWhere(
-            (element) => element.toString() == json["paymentMethod"]),
+        status: json["status"],
+        paymentMethod: json["paymentMethod"].toString(),
         orderedOn: Utils.toDateTime(json["orderedOn"]),
         deliveredAt: Utils.toDateTime(json["deliveredAt"]),
-        price: json["price"].toDouble(),
+        price: json["price"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -62,8 +60,8 @@ class Order {
             ? List<dynamic>.from(products.map((x) => x.toJson()))
             : <Product>[],
         "shippingFee": shippingFee,
-        "status": status.toString(),
-        "paymentMethod": paymentMethod.toString(),
+        "status": status,
+        "paymentMethod": paymentMethod,
         "orderedOn": Utils.fromDateTimeToJson(orderedOn),
         "deliveredAt": Utils.fromDateTimeToJson(deliveredAt),
         "price": price,

@@ -49,8 +49,7 @@ class _AddAddressState extends State<AddAddress> {
     final String userID = ModalRoute.of(context).settings.arguments.toString();
     GeoPoint geoPoint = Provider.of<AddressAPI>(context).geoPoint;
     print(geoPoint);
-    var currentCode;
-    var phoneNumber;
+    var currentCode = '+20';
     print(userID);
     return Form(
       key: formKey,
@@ -499,11 +498,6 @@ class _AddAddressState extends State<AddAddress> {
                         ),
                         child: TextFormField(
                           controller: PhoneNumber,
-                          onChanged: (value) {
-                            setState(() {
-                              phoneNumber = currentCode + value;
-                            });
-                          },
                           autofocus: true,
                           style: TextStyle(
                             fontSize: 18,
@@ -597,6 +591,7 @@ class _AddAddressState extends State<AddAddress> {
                   child: FFButtonWidget(
                     onPressed: () async {
                       if (formKey.currentState.validate()) {
+                        print(PhoneNumber.text);
                         Address address = Address(
                           Area: area.text,
                           StreetName: streetName.text,
@@ -606,7 +601,7 @@ class _AddAddressState extends State<AddAddress> {
                           location: geoPoint,
                           addressName: addressName.text,
                           apartmentNumber: appartmentNo.text,
-                          phoneNumber: phoneNumber,
+                          phoneNumber: currentCode + PhoneNumber.text,
                           Landline: LandLine.text,
                           Landmark: Landmark.text,
                         );

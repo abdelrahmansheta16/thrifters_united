@@ -8,7 +8,7 @@ import 'package:thrifters_united/models/Product.dart';
 class OrderAPI with ChangeNotifier {
   List<Product> products = [];
   Address address = new Address();
-  PaymentMethod method;
+  String method;
   double Price;
 
   void addAddress(Address value) {
@@ -28,7 +28,7 @@ class OrderAPI with ChangeNotifier {
     notifyListeners();
   }
 
-  void addPaymentMethod(PaymentMethod value) {
+  void addPaymentMethod(String value) {
     method = value;
     notifyListeners();
   }

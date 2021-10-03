@@ -15,7 +15,7 @@ class ChoosePaymentMethod extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _ChoosePaymentMethodState extends State<ChoosePaymentMethod> {
-  PaymentMethod _method = PaymentMethod.CreditCard;
+  String _method = PaymentMethod.CreditCard.name;
 
   @override
   Widget build(BuildContext context) {
@@ -37,36 +37,54 @@ class _ChoosePaymentMethodState extends State<ChoosePaymentMethod> {
         centerTitle: true,
         elevation: 4,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              title: const Text('Credit Card'),
-              leading: Radio<PaymentMethod>(
-                value: PaymentMethod.CreditCard,
-                groupValue: _method,
-                onChanged: (PaymentMethod value) {
-                  setState(() {
-                    _method = value;
-                  });
-                },
-              ),
+      body: ListView.builder(
+        itemCount: PaymentMethod.values.length,
+        itemBuilder: (BuildContext context, int index) {
+          PaymentMethod paymentMethod = PaymentMethod.values[index];
+          return ListTile(
+            title: Text(paymentMethod.name),
+            leading: Radio<String>(
+              value: paymentMethod.name,
+              groupValue: _method,
+              onChanged: (String value) {
+                setState(() {
+                  _method = value;
+                });
+              },
             ),
-            ListTile(
-              title: const Text('Cash'),
-              leading: Radio<PaymentMethod>(
-                value: PaymentMethod.Cash,
-                groupValue: _method,
-                onChanged: (PaymentMethod value) {
-                  setState(() {
-                    _method = value;
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
+      // body: SingleChildScrollView(
+      //   child: Column(
+      //     children: <Widget>[
+      //       ListTile(
+      //         title: const Text('Credit Card'),
+      //         leading: Radio<PaymentMethod>(
+      //           value: PaymentMethod.CreditCard,
+      //           groupValue: _method,
+      //           onChanged: (PaymentMethod value) {
+      //             setState(() {
+      //               _method = value;
+      //             });
+      //           },
+      //         ),
+      //       ),
+      //       ListTile(
+      //         title: const Text('Cash'),
+      //         leading: Radio<PaymentMethod>(
+      //           value: PaymentMethod.Cash,
+      //           groupValue: _method,
+      //           onChanged: (PaymentMethod value) {
+      //             setState(() {
+      //               _method = value;
+      //             });
+      //           },
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.teal,
         elevation: 3,

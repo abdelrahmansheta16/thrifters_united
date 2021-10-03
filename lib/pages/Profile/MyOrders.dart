@@ -51,6 +51,9 @@ class _MyOrdersState extends State<MyOrders> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
+              if (!snapshot.hasData) {
+                return Text('fdfsd');
+              }
               List<Order> orders =
                   snapshot.data.docs.map((DocumentSnapshot document) {
                 Order order;
