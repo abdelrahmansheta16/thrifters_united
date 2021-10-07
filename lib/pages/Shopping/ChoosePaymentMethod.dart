@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
@@ -15,12 +16,13 @@ class ChoosePaymentMethod extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _ChoosePaymentMethodState extends State<ChoosePaymentMethod> {
-  String _method = PaymentMethod.CreditCard.toString();
+  String _method = PaymentMethod.CreditCard.name.toString();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: true,
@@ -42,9 +44,9 @@ class _ChoosePaymentMethodState extends State<ChoosePaymentMethod> {
         itemBuilder: (BuildContext context, int index) {
           PaymentMethod paymentMethod = PaymentMethod.values[index];
           return ListTile(
-            title: Text(paymentMethod.toString()),
+            title: Text(paymentMethod.name.toString()),
             leading: Radio<String>(
-              value: paymentMethod.toString(),
+              value: paymentMethod.name.toString(),
               groupValue: _method,
               onChanged: (String value) {
                 setState(() {

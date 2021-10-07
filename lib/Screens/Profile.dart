@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_widgets.dart';
@@ -21,6 +22,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Text(

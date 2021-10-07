@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:thrifters_united/pages/Categories/Brands.dart';
 import 'package:thrifters_united/pages/Categories/Kids.dart';
 import 'package:thrifters_united/pages/Categories/Men.dart';
@@ -19,6 +20,7 @@ class _CategoriesState extends State<Categories> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Align(

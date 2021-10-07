@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
 import 'package:thrifters_united/customUi/GuestUser.dart';
@@ -21,6 +22,7 @@ class _MyOrdersState extends State<MyOrders> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: true,

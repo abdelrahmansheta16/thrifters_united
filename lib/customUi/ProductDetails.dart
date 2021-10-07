@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
@@ -32,6 +33,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
         backgroundColor: Color(0xFF262D34),
         automaticallyImplyLeading: false,
         leading: IconButton(

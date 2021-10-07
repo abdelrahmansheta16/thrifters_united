@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/models/Address.dart';
 import 'package:thrifters_united/pages/Home/Brands.dart';
@@ -64,6 +65,7 @@ class _HomescreenState extends State<Homescreen> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Align(

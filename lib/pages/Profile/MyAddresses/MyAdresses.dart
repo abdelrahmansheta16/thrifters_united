@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/customUi/AddressWidget.dart';
 import 'package:thrifters_united/customUi/GuestUser.dart';
@@ -23,6 +24,7 @@ class _MyAddressesState extends State<MyAddresses> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: true,

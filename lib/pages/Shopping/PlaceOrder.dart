@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
 import 'package:thrifters_united/Screens/Mainscreen.dart';
@@ -22,6 +23,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: true,
@@ -395,7 +397,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                 await value.addOrder(
                     currentOrder: Order(
                       shippingFee: 15,
-                      status: Status.BeingProcessed.toString(),
+                      status: Status.BeingProcessed.name.toString(),
                       orderedOn: DateTime.now(),
                       address: value.address,
                       products: value.products,

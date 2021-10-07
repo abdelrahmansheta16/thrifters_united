@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/AddressAPI.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_drop_down_template.dart';
@@ -56,6 +57,8 @@ class _AddAddressState extends State<AddAddress> {
       child: Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
+          systemOverlayStyle:
+              SystemUiOverlayStyle(statusBarColor: Colors.white),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           automaticallyImplyLeading: true,
@@ -221,7 +224,7 @@ class _AddAddressState extends State<AddAddress> {
                 ),
                 FlutterFlowDropDown(
                   options: BuildingType.values
-                      .map((buildingType) => buildingType.toString())
+                      .map((buildingType) => buildingType.name.toString())
                       .toList(),
                   onChanged: (val) => setState(() => buildingType = val),
                   width: 130,

@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/pages/Authentication/SIGN%20IN.dart';
 import 'package:thrifters_united/pages/Authentication/SIGN%20UP.dart';
@@ -27,6 +28,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: true,
