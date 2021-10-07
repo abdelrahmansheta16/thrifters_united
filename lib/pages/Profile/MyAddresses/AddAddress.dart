@@ -221,7 +221,7 @@ class _AddAddressState extends State<AddAddress> {
                 ),
                 FlutterFlowDropDown(
                   options: BuildingType.values
-                      .map((buildingType) => buildingType.name.toString())
+                      .map((buildingType) => buildingType.toString())
                       .toList(),
                   onChanged: (val) => setState(() => buildingType = val),
                   width: 130,

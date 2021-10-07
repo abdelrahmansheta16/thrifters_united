@@ -15,7 +15,7 @@ class ChoosePaymentMethod extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _ChoosePaymentMethodState extends State<ChoosePaymentMethod> {
-  String _method = PaymentMethod.CreditCard.name;
+  String _method = PaymentMethod.CreditCard.toString();
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +42,9 @@ class _ChoosePaymentMethodState extends State<ChoosePaymentMethod> {
         itemBuilder: (BuildContext context, int index) {
           PaymentMethod paymentMethod = PaymentMethod.values[index];
           return ListTile(
-            title: Text(paymentMethod.name),
+            title: Text(paymentMethod.toString()),
             leading: Radio<String>(
-              value: paymentMethod.name,
+              value: paymentMethod.toString(),
               groupValue: _method,
               onChanged: (String value) {
                 setState(() {

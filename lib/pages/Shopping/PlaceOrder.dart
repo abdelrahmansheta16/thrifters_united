@@ -395,7 +395,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                 await value.addOrder(
                     currentOrder: Order(
                       shippingFee: 15,
-                      status: Status.BeingProcessed.name,
+                      status: Status.BeingProcessed.toString(),
                       orderedOn: DateTime.now(),
                       address: value.address,
                       products: value.products,
