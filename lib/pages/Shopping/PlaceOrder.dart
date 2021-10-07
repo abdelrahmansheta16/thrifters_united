@@ -17,6 +17,7 @@ class PlaceOrder extends StatefulWidget {
 
 class _PlaceOrderState extends State<PlaceOrder> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  static List<String> Status = ['BeingProcessed', 'OnItsWay', 'Delivered' ];
 
   @override
   Widget build(BuildContext context) {
@@ -397,7 +398,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                 await value.addOrder(
                     currentOrder: Order(
                       shippingFee: 15,
-                      status: Status.BeingProcessed.name.toString(),
+                      status: Status[0],
                       orderedOn: DateTime.now(),
                       address: value.address,
                       products: value.products,

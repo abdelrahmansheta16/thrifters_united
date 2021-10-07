@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
-import 'package:thrifters_united/models/Order.dart';
 import 'package:thrifters_united/pages/Shopping/PlaceOrder.dart';
 
 class ChoosePaymentMethod extends StatefulWidget {
@@ -12,11 +11,14 @@ class ChoosePaymentMethod extends StatefulWidget {
 
   @override
   State<ChoosePaymentMethod> createState() => _ChoosePaymentMethodState();
+
+
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _ChoosePaymentMethodState extends State<ChoosePaymentMethod> {
-  String _method = PaymentMethod.CreditCard.name.toString();
+  static List<String> PaymentMethod = ['CreditCard', 'Cash'];
+  String _method = PaymentMethod.first;
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +42,13 @@ class _ChoosePaymentMethodState extends State<ChoosePaymentMethod> {
         elevation: 4,
       ),
       body: ListView.builder(
-        itemCount: PaymentMethod.values.length,
+        itemCount: PaymentMethod.length,
         itemBuilder: (BuildContext context, int index) {
-          PaymentMethod paymentMethod = PaymentMethod.values[index];
+          String paymentMethod = PaymentMethod[index];
           return ListTile(
-            title: Text(paymentMethod.name.toString()),
+            title: Text(paymentMethod),
             leading: Radio<String>(
-              value: paymentMethod.name.toString(),
+              value: paymentMethod,
               groupValue: _method,
               onChanged: (String value) {
                 setState(() {

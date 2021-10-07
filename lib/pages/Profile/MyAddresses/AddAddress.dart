@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/AddressAPI.dart';
@@ -15,6 +14,8 @@ class AddAddress extends StatefulWidget {
 
   @override
   _AddAddressState createState() => _AddAddressState();
+
+
 }
 
 class _AddAddressState extends State<AddAddress> {
@@ -30,6 +31,9 @@ class _AddAddressState extends State<AddAddress> {
   TextEditingController LandLine;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  static List<String> BuildingType = [  'Apartment',
+    'Villa',
+    'Office',];
 
   @override
   void initState() {
@@ -223,9 +227,7 @@ class _AddAddressState extends State<AddAddress> {
                   },
                 ),
                 FlutterFlowDropDown(
-                  options: BuildingType.values
-                      .map((buildingType) => buildingType.name.toString())
-                      .toList(),
+                  options: BuildingType.toList(),
                   onChanged: (val) => setState(() => buildingType = val),
                   width: 130,
                   height: 40,

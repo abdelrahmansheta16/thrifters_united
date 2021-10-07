@@ -68,6 +68,4 @@ class Order {
       };
 }
 
-enum Status { BeingProcessed, OnItsWay, Delivered }
 
-enum PaymentMethod { CreditCard, Cash }

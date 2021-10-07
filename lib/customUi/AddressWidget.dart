@@ -29,7 +29,7 @@ class AddressWidget extends StatelessWidget {
             subtitle: Column(
               children: [
                 Text(
-                  address?.apartmentNumber,
+                  address?.phoneNumber,
                   style: FlutterFlowTheme.subtitle2.override(
                     fontFamily: 'Poppins',
                   ),

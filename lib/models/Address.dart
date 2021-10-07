@@ -72,8 +72,4 @@ class Address {
       };
 }
 
-enum BuildingType {
-  Apartment,
-  Villa,
-  Office,
-}
+
