@@ -14,8 +14,6 @@ class AddAddress extends StatefulWidget {
 
   @override
   _AddAddressState createState() => _AddAddressState();
-
-
 }
 
 class _AddAddressState extends State<AddAddress> {
@@ -31,9 +29,11 @@ class _AddAddressState extends State<AddAddress> {
   TextEditingController LandLine;
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  static List<String> BuildingType = [  'Apartment',
+  static List<String> BuildingType = [
+    'Apartment',
     'Villa',
-    'Office',];
+    'Office',
+  ];
 
   @override
   void initState() {
@@ -62,7 +62,7 @@ class _AddAddressState extends State<AddAddress> {
         key: scaffoldKey,
         appBar: AppBar(
           systemOverlayStyle:
-              SystemUiOverlayStyle(statusBarColor: Colors.white),
+              SystemUiOverlayStyle(statusBarColor: Colors.black),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
           automaticallyImplyLeading: true,

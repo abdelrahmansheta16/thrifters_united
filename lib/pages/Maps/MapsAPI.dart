@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart' as LOCATION;
 
 /// Determine the current position of the device.
 ///
@@ -11,6 +13,9 @@ class MapsAPI {
   static Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
+    LOCATION.Location location = new LOCATION.Location();
+    bool _serviceEnabled;
+    LOCATION.LocationData _locationData;
 
     // Test if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -18,7 +23,10 @@ class MapsAPI {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      return Future.error('Location services are disabled.');
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return Future.error('Location services are disabled.');
+      }
     }
 
     permission = await Geolocator.checkPermission();

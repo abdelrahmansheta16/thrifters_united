@@ -39,7 +39,7 @@ class WishlistWidget extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Text(

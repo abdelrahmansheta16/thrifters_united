@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/AuthenticationAPI.dart';
+import 'package:thrifters_united/FirebaseAPI/LocationProvider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
 import 'package:thrifters_united/Screens/Authentication.dart';
 import 'package:thrifters_united/Screens/Cart.dart';
@@ -33,6 +34,7 @@ Future main() async {
         ChangeNotifierProvider(create: (context) => AuthenticationAPI()),
         ChangeNotifierProvider(create: (context) => OrderAPI()),
         ChangeNotifierProvider(create: (context) => AddressAPI()),
+        ChangeNotifierProvider(create: (context) => LocationProvider()),
       ],
       child: MyApp(),
     ),
@@ -130,6 +132,7 @@ class MyApp extends StatelessWidget {
               CountryLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
             ],
             debugShowCheckedModeBanner: false,
             title: 'Provider Demo',

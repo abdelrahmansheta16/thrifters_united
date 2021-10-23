@@ -17,14 +17,14 @@ class PlaceOrder extends StatefulWidget {
 
 class _PlaceOrderState extends State<PlaceOrder> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  static List<String> Status = ['BeingProcessed', 'OnItsWay', 'Delivered' ];
+  static List<String> Status = ['BeingProcessed', 'OnItsWay', 'Delivered'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: true,
@@ -395,17 +395,17 @@ class _PlaceOrderState extends State<PlaceOrder> {
           builder: (context, value, child) {
             return TextButton(
               onPressed: () async {
+                Order order = Order(
+                  shippingFee: 15,
+                  status: Status[0],
+                  orderedOn: DateTime.now(),
+                  address: value.address,
+                  products: value.products,
+                  paymentMethod: value.method,
+                  price: value.Price,
+                );
                 await value.addOrder(
-                    currentOrder: Order(
-                      shippingFee: 15,
-                      status: Status[0],
-                      orderedOn: DateTime.now(),
-                      address: value.address,
-                      products: value.products,
-                      paymentMethod: value.method,
-                      price: value.Price,
-                    ),
-                    userID: widget.userID);
+                    currentOrder: order, userID: widget.userID);
                 final BottomNavigationBar navigationBar =
                     globalKey.currentWidget;
                 navigationBar.onTap(0);

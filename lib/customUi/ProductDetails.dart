@@ -33,7 +33,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
         backgroundColor: Color(0xFF262D34),
         automaticallyImplyLeading: false,
         leading: IconButton(
@@ -107,29 +107,38 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget> {
                           Padding(
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 50),
                             child: PageView(
-                              controller: pageViewController,
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                Image.network(
-                                  widget.product.images[0],
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
+                                controller: pageViewController,
+                                scrollDirection: Axis.horizontal,
+                                children: List.generate(
+                                    widget.product.images.length, (index) {
+                                  return Image.network(
+                                    widget.product.images[index],
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  );
+                                })
+                                // [
+                                //   Image.network(
+                                //     widget.product.images[0],
+                                //     width: 100,
+                                //     height: 100,
+                                //     fit: BoxFit.cover,
+                                //   ),
+                                //   Image.network(
+                                //     widget.product.images[1],
+                                //     width: 100,
+                                //     height: 100,
+                                //     fit: BoxFit.cover,
+                                //   ),
+                                //   Image.network(
+                                //     widget.product.images[2],
+                                //     width: 100,
+                                //     height: 100,
+                                //     fit: BoxFit.cover,
+                                //   )
+                                // ],
                                 ),
-                                Image.network(
-                                  widget.product.images[1],
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
-                                Image.network(
-                                  widget.product.images[2],
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                )
-                              ],
-                            ),
                           ),
                           Align(
                             alignment: Alignment(0, 1),
@@ -137,7 +146,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget> {
                               padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                               child: SmoothPageIndicator(
                                 controller: pageViewController,
-                                count: 3,
+                                count: widget.product.images.length,
                                 axisDirection: Axis.horizontal,
                                 onDotClicked: (i) {
                                   pageViewController.animateToPage(
@@ -192,7 +201,7 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.product.type,
+                    widget.product.title,
                     style: FlutterFlowTheme.bodyText2.override(
                       fontFamily: 'Lexend Deca',
                       color: Color(0xFF8B97A2),

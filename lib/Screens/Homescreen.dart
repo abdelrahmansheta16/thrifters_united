@@ -65,7 +65,7 @@ class _HomescreenState extends State<Homescreen> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Align(

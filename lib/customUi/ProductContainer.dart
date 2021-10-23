@@ -54,7 +54,7 @@ class ProductContainer extends StatelessWidget {
                 ),
               ),
               Text(
-                product.type,
+                product.productId,
                 style: FlutterFlowTheme.bodyText1.override(
                   fontFamily: 'Poppins',
                 ),

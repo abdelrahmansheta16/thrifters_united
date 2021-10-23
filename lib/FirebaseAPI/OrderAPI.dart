@@ -10,6 +10,11 @@ class OrderAPI with ChangeNotifier {
   Address address = new Address();
   String method;
   double Price;
+  final adminOrdersRef =
+      FirebaseFirestore.instance.collection('orders').withConverter<Order>(
+            fromFirestore: (snapshot, _) => Order.fromJson(snapshot.data()),
+            toFirestore: (order, _) => order.toJson(),
+          );
 
   void addAddress(Address value) {
     if (address == null) {
@@ -62,6 +67,7 @@ class OrderAPI with ChangeNotifier {
           toFirestore: (order, _) => order.toJson(),
         );
     await UsersRef.add(currentOrder);
+    await adminOrdersRef.add(currentOrder);
     await UserAPI.clearCart();
   }
 

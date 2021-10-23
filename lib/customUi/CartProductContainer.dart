@@ -89,7 +89,7 @@ class CartProductContainer extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 4, 0, 4),
                       child: Text(
-                        product.type,
+                        product.title,
                         style: FlutterFlowTheme.bodyText1.override(
                           fontFamily: 'Lexend Deca',
                           color: Color(0xFF090F13),
