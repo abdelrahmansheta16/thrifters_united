@@ -7,20 +7,20 @@ import 'package:thrifters_united/Screens/Wishlist.dart';
 
 GlobalKey globalKey = new GlobalKey(debugLabel: 'btm_app_bar');
 
-class Mainscreen extends StatefulWidget {
-  const Mainscreen({Key key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key key}) : super(key: key);
 
   @override
-  State<Mainscreen> createState() => _MainscreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
-class _MainscreenState extends State<Mainscreen> {
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<dynamic> _ScreenOptions = <dynamic>[
-    Homescreen(),
+    HomeScreen(),
     Categories(),
     Cart(),
     Wishlist(),

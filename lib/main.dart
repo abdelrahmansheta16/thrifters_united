@@ -138,8 +138,8 @@ class MyApp extends StatelessWidget {
             title: 'Provider Demo',
             initialRoute: '/',
             routes: {
-              '/': (context) => Mainscreen(),
-              '/homescreen': (context) => Homescreen(),
+              '/': (context) => MainScreen(),
+              '/homescreen': (context) => HomeScreen(),
               '/categories': (context) => Categories(),
               '/cart': (context) => Cart(),
               '/wishlist': (context) => Wishlist(),

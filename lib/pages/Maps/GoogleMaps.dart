@@ -21,6 +21,7 @@ class _MapScreenState extends State<MapScreen> {
   String userId;
   static Position position;
   Completer<GoogleMapController> _mapController = Completer();
+  bool isCameraMoving = false;
 
   static CameraPosition _cameraPosition = CameraPosition(
     bearing: 0.0,
@@ -33,6 +34,8 @@ class _MapScreenState extends State<MapScreen> {
     position = await MapsAPI.determinePosition().whenComplete(() async {
       setState(() {});
     });
+    LocationProvider.of(context, listen: false)
+        .setLastIdleLocation(LatLng(position.latitude, position.longitude));
   }
 
   @override
@@ -52,16 +55,25 @@ class _MapScreenState extends State<MapScreen> {
                 _cameraPosition = position;
                 LocationProvider.of(context, listen: false)
                     .setLastIdleLocation(position.target);
+                setState(() {
+                  isCameraMoving = true;
+                });
               },
               onCameraIdle: () async {
                 print("onCameraIdle#_lastMapPosition = $_cameraPosition");
                 LocationProvider.of(context, listen: false)
                     .setLastIdleLocation(_cameraPosition.target);
+                setState(() {
+                  isCameraMoving = false;
+                });
               },
-              onCameraMoveStarted: () {
-                print(
-                    "onCameraMoveStarted#_lastMapPosition = $_cameraPosition");
-              },
+              // onCameraMoveStarted: () {
+              //   // setState(() {
+              //   //   isCameraMoving = true;
+              //   // });
+              //   print(
+              //       "onCameraMoveStarted#_lastMapPosition = $_cameraPosition");
+              // },
               // onCameraMove: (CameraPosition cameraPosition) {
               //   setState(() {
               //     _cameraPosition = cameraPosition;
@@ -69,6 +81,7 @@ class _MapScreenState extends State<MapScreen> {
               // },
               markers: {
                 Marker(
+                    draggable: true,
                     position: currentPosition.lastIdleLocation,
                     markerId: MarkerId('id'),
                     icon: BitmapDescriptor.defaultMarkerWithHue(
@@ -119,33 +132,63 @@ class _MapScreenState extends State<MapScreen> {
                             );
                             Navigator.pop(context);
                           },
-                          title: StreamBuilder<List<Placemark>>(
-                              stream: placemarkFromCoordinates(
-                                      _cameraPosition.target.latitude,
-                                      _cameraPosition.target.longitude)
-                                  .asStream(),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text('Something went wrong');
-                                }
-
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Center(
-                                      child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ));
-                                }
-                                String currentAddress =
-                                    snapshot.data.first.street;
-
-                                return Text(
-                                  currentAddress,
-                                  style: TextStyle(
+                          title: isCameraMoving
+                              ? Center(
+                                  child: CircularProgressIndicator(
                                     color: Colors.white,
                                   ),
-                                );
-                              }),
+                                )
+                              : FutureBuilder<String>(
+                                  future: getAddress(
+                                      currentPosition.lastIdleLocation),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Something went wrong');
+                                    }
+
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Center(
+                                          child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ));
+                                    }
+                                    String streetName = snapshot.data;
+                                    print(streetName);
+                                    return Text(
+                                      streetName,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    );
+                                  }),
+                          // title: StreamBuilder<List<Placemark>>(
+                          //     stream: placemarkFromCoordinates(
+                          //       currentPosition.lastIdleLocation.latitude,
+                          //       currentPosition.lastIdleLocation.longitude,
+                          //     ).asStream(),
+                          //     builder: (context, snapshot) {
+                          //       if (snapshot.hasError) {
+                          //         return Text('Something went wrong');
+                          //       }
+                          //
+                          //       if (snapshot.connectionState ==
+                          //           ConnectionState.waiting) {
+                          //         return Center(
+                          //             child: CircularProgressIndicator(
+                          //           color: Colors.white,
+                          //         ));
+                          //       }
+                          //       String currentAddress =
+                          //           snapshot.data.first.street;
+                          //
+                          //       return Text(
+                          //         currentAddress,
+                          //         style: TextStyle(
+                          //           color: Colors.white,
+                          //         ),
+                          //       );
+                          //     }),
                           trailing: Icon(
                             Icons.arrow_forward_ios,
                             color: Colors.white,
@@ -191,4 +234,15 @@ class _MapScreenState extends State<MapScreen> {
             ),
     );
   }
+
+  Future<String> getAddress(LatLng latLng) async {
+    return await placemarkFromCoordinates(
+      latLng.latitude,
+      latLng.longitude,
+    ).then((value) => value.first.street);
+  }
+
+  // @override
+  // // TODO: implement wantKeepAlive
+  // bool get wantKeepAlive => true;
 }

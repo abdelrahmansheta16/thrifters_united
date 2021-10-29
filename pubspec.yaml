@@ -43,7 +43,7 @@ dependencies:
   cloud_firestore:
   provider:
   google_sign_in:
-  flutter_facebook_auth:
+  flutter_facebook_auth: ^3.5.2
   smooth_page_indicator:
   flutter_polyline_points:
   google_maps_flutter:
@@ -52,6 +52,7 @@ dependencies:
   location:
   http:
   permission_handler:
+  firebase_messaging:
 
 
 dev_dependencies:

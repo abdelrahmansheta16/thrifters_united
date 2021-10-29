@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-import '../utils.dart';
+import 'package:thrifters_united/utils.dart';
+import 'Category.dart';
 
 List<Product> productFromJson(String str) =>
     List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
@@ -17,13 +18,12 @@ class Product {
     this.productId,
     this.title,
     this.images,
+    this.categories,
     this.description,
-    this.category,
     this.brand,
     this.color,
     this.type,
     this.size,
-    this.isLowQuantity,
     this.isSoldOut,
     this.isBackorder,
     this.isVisible,
@@ -38,40 +38,47 @@ class Product {
   String productId;
   String title;
   List<String> images;
+  List<Category> categories;
   String description;
-  String category;
   String brand;
   List<String> color;
   String type;
   List<String> size;
-  bool isLowQuantity;
-  bool isSoldOut;
+  bool isSoldOut = false;
   bool isBackorder;
   bool isVisible;
   DateTime publishedAt;
   DateTime updatedAt;
-  double price;
-  bool inventoryManagement;
-  bool inventoryPolicy;
+  num price;
+  bool inventoryManagement = true;
+  bool inventoryPolicy = true;
   bool taxable;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         productId: json["productID"],
         title: json["title"],
-        images: List<String>.from(json["images"].map((x) => x)),
+        images: json["images"] != null
+            ? List<String>.from(json["images"].map((x) => x))
+            : <String>[],
+        categories: json["categories"] != null
+            ? List<dynamic>.from(
+                json["categories"].map((x) => Category.fromJson(x)))
+            : <Product>[],
         description: json["description"],
-        category: json["category"],
         brand: json["brand"],
-        color: List<String>.from(json["color"].map((x) => x)),
+        color: json["color"] != null
+            ? List<String>.from(json["color"].map((x) => x))
+            : <String>[],
         type: json["type"],
-        size: List<String>.from(json["size"].map((x) => x)),
-        isLowQuantity: json["isLowQuantity"],
+        size: json["size"] != null
+            ? List<String>.from(json["size"].map((x) => x))
+            : <String>[],
         isSoldOut: json["isSoldOut"],
         isBackorder: json["isBackorder"],
         isVisible: json["isVisible"],
         publishedAt: Utils.toDateTime(json["publishedAt"]),
         updatedAt: Utils.toDateTime(json["updatedAt"]),
-        price: json["price"].toDouble(),
+        price: json["price"],
         inventoryManagement: json["inventoryManagement"],
         inventoryPolicy: json["inventoryPolicy"],
         taxable: json["taxable"],
@@ -80,14 +87,19 @@ class Product {
   Map<String, dynamic> toJson() => {
         "productID": productId,
         "title": title,
-        "images": List<String>.from(images.map((x) => x)),
+        "images": images != null
+            ? List<String>.from(images.map((x) => x))
+            : <String>[],
+        "categories": categories != null
+            ? List<dynamic>.from(categories.map((x) => x.toJson()))
+            : <Category>[],
         "description": description,
-        "category": category,
         "brand": brand,
-        "color": List<String>.from(color.map((x) => x)),
+        "color":
+            color != null ? List<String>.from(color.map((x) => x)) : <String>[],
         "type": type,
-        "size": List<String>.from(size.map((x) => x)),
-        "isLowQuantity": isLowQuantity,
+        "size":
+            size != null ? List<String>.from(size.map((x) => x)) : <String>[],
         "isSoldOut": isSoldOut,
         "isBackorder": isBackorder,
         "isVisible": isVisible,
