@@ -49,78 +49,82 @@ class _FilteredProductsState extends State<FilteredProducts> {
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.5, 0, 2, 2),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-                              child: Icon(
-                                Icons.sort_sharp,
-                                color: Colors.black,
-                                size: 24,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-                              child: Text(
-                                'sort',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 18,
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0.5, 0, 2, 2),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                                child: Icon(
+                                  Icons.sort_sharp,
+                                  color: Colors.black,
+                                  size: 24,
                                 ),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                                child: Text(
+                                  'sort',
+                                  style: FlutterFlowTheme.bodyText1.override(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0.5, 0, 2, 2),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-                              child: Icon(
-                                Icons.filter_list,
-                                color: Colors.black,
-                                size: 24,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
-                              child: Text(
-                                'filter',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 18,
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0.5, 0, 2, 2),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                                child: Icon(
+                                  Icons.filter_list,
+                                  color: Colors.black,
+                                  size: 24,
                                 ),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(5, 5, 5, 5),
+                                child: Text(
+                                  'filter',
+                                  style: FlutterFlowTheme.bodyText1.override(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -134,28 +138,48 @@ class _FilteredProductsState extends State<FilteredProducts> {
                 initialIndex: 0,
                 child: Column(
                   children: [
-                    TabBar(
-                      indicator: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(1)),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TabBar(
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: Color(0xFF1D9E6A),
+                            width: 1,
+                          ),
+                        ),
+                        isScrollable: true,
+                        labelColor: Color(0xFF1D9E6A),
+                        unselectedLabelColor: Colors.black,
+                        labelStyle: FlutterFlowTheme.bodyText1,
+                        indicatorColor: Color(0xFF1D9E6A),
+                        tabs: [
+                          Tab(
+                            child: Text(
+                              'Example 1',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              'Example 1',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              'Example 1',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              'Example 1',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                        ],
                       ),
-                      labelColor: Color(0xFF1D9E6A),
-                      unselectedLabelColor: Colors.black,
-                      labelStyle: FlutterFlowTheme.bodyText1,
-                      indicatorColor: Color(0xFF1D9E6A),
-                      tabs: [
-                        Tab(
-                          text: 'Example 1',
-                        ),
-                        Tab(
-                          text: 'Example 2',
-                        ),
-                        Tab(
-                          text: 'Example 3',
-                        ),
-                        Tab(
-                          text: 'Example 4',
-                        ),
-                      ],
                     ),
                     Expanded(
                       child: TabBarView(
