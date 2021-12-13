@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
-import 'package:thrifters_united/models/Address.dart';
-import 'package:thrifters_united/models/Order.dart';
-import 'package:thrifters_united/models/Product.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
+
 
 class OrderAPI with ChangeNotifier {
   List<Product> products = [];
@@ -66,8 +65,12 @@ class OrderAPI with ChangeNotifier {
           fromFirestore: (snapshot, _) => Order.fromJson(snapshot.data()),
           toFirestore: (order, _) => order.toJson(),
         );
-    await UsersRef.add(currentOrder);
-    await adminOrdersRef.add(currentOrder);
+    await UsersRef.add(currentOrder).then((value) {
+      currentOrder.orderID = value.id;
+      UsersRef.doc(value.id).set(currentOrder);
+      adminOrdersRef.doc(value.id).set(currentOrder);
+      return null;
+    });
     await UserAPI.clearCart();
   }
 

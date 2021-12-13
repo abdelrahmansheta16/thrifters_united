@@ -11,8 +11,6 @@ class ChoosePaymentMethod extends StatefulWidget {
 
   @override
   State<ChoosePaymentMethod> createState() => _ChoosePaymentMethodState();
-
-
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
@@ -24,12 +22,12 @@ class _ChoosePaymentMethodState extends State<ChoosePaymentMethod> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.white),
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.black),
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: true,
         title: Text(
-          'Addresses',
+          'Choose Payment Method',
           style: FlutterFlowTheme.bodyText1.override(
             fontFamily: 'Poppins',
             color: Colors.black,

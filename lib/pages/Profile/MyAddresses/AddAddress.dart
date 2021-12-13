@@ -7,7 +7,8 @@ import 'package:thrifters_united/flutter_flow/flutter_flow_drop_down_template.da
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:thrifters_united/models/Address.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AddAddress extends StatefulWidget {
   AddAddress({Key key}) : super(key: key);
@@ -503,7 +504,6 @@ class _AddAddressState extends State<AddAddress> {
                         ),
                         child: TextFormField(
                           controller: PhoneNumber,
-                          autofocus: true,
                           style: TextStyle(
                             fontSize: 18,
                             letterSpacing: 2.0,
@@ -598,20 +598,27 @@ class _AddAddressState extends State<AddAddress> {
                       if (formKey.currentState.validate()) {
                         print(PhoneNumber.text);
                         Address address = Address(
-                          Area: area.text,
-                          StreetName: streetName.text,
-                          BuildingName: buildingNo.text,
+                          area: area.text,
+                          streetName: streetName.text,
+                          buildingName: buildingNo.text,
                           floorNumber: floorNo.text,
                           buildingType: buildingType,
                           location: geoPoint,
                           addressName: addressName.text,
                           apartmentNumber: appartmentNo.text,
                           phoneNumber: currentCode + PhoneNumber.text,
-                          Landline: LandLine.text,
-                          Landmark: Landmark.text,
+                          landline: LandLine.text,
+                          landmark: Landmark.text,
                         );
-                        await AddressAPI.addAddresses(address, userID);
-                        Navigator.pop(context);
+                        if (address.location != null) {
+                          print(address.location);
+                          await AddressAPI.addAddresses(address, userID);
+                          Navigator.pop(context);
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: 'Please choose a location');
+                        }
+
                         // await FirebaseAuth.instance.verifyPhoneNumber(
                         //   phoneNumber: currentCode + PhoneNumber.text,
                         //   verificationCompleted:

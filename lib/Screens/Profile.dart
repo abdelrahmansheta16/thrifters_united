@@ -94,7 +94,8 @@ class _ProfileState extends State<Profile> {
                                 padding: EdgeInsets.fromLTRB(10, 10, 10, 5),
                                 child: FFButtonWidget(
                                   onPressed: () {
-                                    print('Button pressed ...');
+                                    Navigator.pushNamed(
+                                        context, '/wishlist/authentication');
                                   },
                                   text: 'Sign in/Sign up',
                                   options: FFButtonOptions(

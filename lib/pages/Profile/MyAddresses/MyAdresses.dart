@@ -6,7 +6,7 @@ import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/customUi/AddressWidget.dart';
 import 'package:thrifters_united/customUi/GuestUser.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
-import 'package:thrifters_united/models/Address.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
 
 class MyAddresses extends StatefulWidget {
   final String userID;
@@ -78,7 +78,7 @@ class _MyAddressesState extends State<MyAddresses> {
                       snapshot.data.docs.map((DocumentSnapshot document) {
                     Address address;
                     address = document.data();
-                    address.AddressID = document.id;
+                    address.addressID = document.id;
                     return address;
                   }).toList();
                   return ListView.builder(

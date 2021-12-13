@@ -17,7 +17,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  User user;
+  // User user;
   TextEditingController EmailController;
   TextEditingController PasswordController;
   bool passwordVisibility;
@@ -26,7 +26,7 @@ class _SignInState extends State<SignIn> {
   @override
   void initState() {
     super.initState();
-    _auth.userChanges().listen((event) => setState(() => user = event));
+    // _auth.userChanges().listen((event) => setState(() => user = event));
     EmailController = TextEditingController();
     PasswordController = TextEditingController();
     passwordVisibility = false;
@@ -55,12 +55,12 @@ class _SignInState extends State<SignIn> {
                 obscureText: false,
                 decoration: InputDecoration(
                   isDense: true,
-                  labelText: 'Email adress',
+                  labelText: 'Email address',
                   labelStyle: FlutterFlowTheme.bodyText1.override(
                     fontFamily: 'Poppins',
                     color: Color(0xFF808080),
                   ),
-                  hintText: 'Email adress',
+                  hintText: 'Email address',
                   hintStyle: FlutterFlowTheme.bodyText1.override(
                     fontFamily: 'Poppins',
                     color: Color(0xFF808080),
@@ -159,7 +159,7 @@ class _SignInState extends State<SignIn> {
                     return 'Please input a valid password';
                   }
                   if (val.length < 8) {
-                    return 'minimum required charachters are 8';
+                    return 'minimum required characters are 8';
                   }
                   return null;
                 },

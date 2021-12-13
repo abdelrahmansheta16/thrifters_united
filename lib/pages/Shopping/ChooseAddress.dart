@@ -8,8 +8,7 @@ import 'package:thrifters_united/customUi/chooseAddressWidget.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:thrifters_united/models/Address.dart';
-import 'package:thrifters_united/models/Order.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
 import 'package:thrifters_united/pages/Shopping/ChoosePaymentMethod.dart';
 
 class chooseAddress extends StatefulWidget {
@@ -59,7 +58,7 @@ class _chooseAddressState extends State<chooseAddress> {
                 snapshot.data.docs.map((DocumentSnapshot document) {
               Address address;
               address = document.data();
-              address.AddressID = document.id;
+              address.addressID = document.id;
               return address;
             }).toList();
             return SingleChildScrollView(

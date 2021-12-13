@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:thrifters_united/models/Address.dart';
-import 'package:thrifters_united/models/Product.dart';
-import 'package:thrifters_united/models/User.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
+
+import 'ProductAPI.dart';
 
 class UserAPI {
   static final FirebaseAuth auth = FirebaseAuth.instance;
@@ -17,6 +17,16 @@ class UserAPI {
     return users;
   }
 
+  static Future<DocumentSnapshot<USER>> getUser(String userID) {
+    final UsersRef =
+        FirebaseFirestore.instance.collection('users').withConverter<USER>(
+              fromFirestore: (snapshot, _) => USER.fromJson(snapshot.data()),
+              toFirestore: (user, _) => user.toJson(),
+            );
+    Future<DocumentSnapshot<USER>> users = UsersRef.doc(userID).get();
+    return users;
+  }
+
   static Stream<QuerySnapshot<Product>> loadCart(String userID) {
     final UsersRef = FirebaseFirestore.instance
         .collection('users/$userID/cart')
@@ -28,14 +38,25 @@ class UserAPI {
     return cart;
   }
 
-  static Future addUser({USER user}) async {
+  static Stream<QuerySnapshot<Product>> loadWishlist(String userID) {
+    final UsersRef = FirebaseFirestore.instance
+        .collection('users/$userID/wishlist')
+        .withConverter<Product>(
+          fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()),
+          toFirestore: (product, _) => product.toJson(),
+        );
+    Stream<QuerySnapshot<Product>> wishlist = UsersRef.snapshots();
+    return wishlist;
+  }
+
+  static Future setUser({USER user}) async {
     final UsersRef =
         FirebaseFirestore.instance.collection('users').withConverter<USER>(
               fromFirestore: (snapshot, _) => USER.fromJson(snapshot.data()),
               toFirestore: (user, _) => user.toJson(),
             );
-    String userID = await auth.currentUser.uid;
-    await UsersRef.doc(userID).set(user);
+
+    await UsersRef.doc(user.userID).set(user, SetOptions(merge: true));
   }
 
   static Future addCart({Product product, String userID}) async {
@@ -48,6 +69,17 @@ class UserAPI {
     await UsersRef.doc(product.productId).set(product);
   }
 
+  static Future addWishlist({Product product, String userID}) async {
+    final UsersRef = FirebaseFirestore.instance
+        .collection('users/$userID/wishlist')
+        .withConverter<Product>(
+          fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()),
+          toFirestore: (product, _) => product.toJson(),
+        );
+    await UsersRef.doc(product.productId).set(product);
+    await ProductAPI.addProductToWishlist(product: product);
+  }
+
   static Future removeProductFromCart({Product product}) async {
     String userID = await auth.currentUser.uid;
     final UsersRef = FirebaseFirestore.instance
@@ -57,6 +89,18 @@ class UserAPI {
           toFirestore: (product, _) => product.toJson(),
         );
     UsersRef.doc(product.productId).delete();
+  }
+
+  static Future removeProductFromWishlist({Product product}) async {
+    String userID = await auth.currentUser.uid;
+    final UsersRef = FirebaseFirestore.instance
+        .collection('users/$userID/wishlist')
+        .withConverter<Product>(
+          fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()),
+          toFirestore: (product, _) => product.toJson(),
+        );
+    UsersRef.doc(product.productId).delete();
+    await ProductAPI.removeProductToWishlist(product: product);
   }
 
   static Future clearCart() async {
@@ -123,6 +167,6 @@ class UserAPI {
           fromFirestore: (snapshot, _) => Address.fromJson(snapshot.data()),
           toFirestore: (address, _) => address.toJson(),
         );
-    UsersRef.doc(address.AddressID).delete();
+    UsersRef.doc(address.addressID).delete();
   }
 }

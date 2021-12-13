@@ -1,6 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
-import 'package:thrifters_united/models/Address.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ class _ChooseAddressWidgetState extends State<ChooseAddressWidget> {
                   },
                 ),
                 title: Text(
-                  address.AddressID,
+                  address.addressID,
                   style: FlutterFlowTheme.title3.override(
                     fontFamily: 'Poppins',
                   ),
@@ -45,7 +45,7 @@ class _ChooseAddressWidgetState extends State<ChooseAddressWidget> {
                 subtitle: Column(
                   children: [
                     Text(
-                      address.StreetName,
+                      address.streetName,
                       style: FlutterFlowTheme.subtitle2.override(
                         fontFamily: 'Poppins',
                       ),

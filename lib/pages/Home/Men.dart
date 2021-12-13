@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:thrifters_united/FirebaseAPI/FilterProvider.dart';
 import 'package:thrifters_united/FirebaseAPI/ProductAPI.dart';
 import 'package:thrifters_united/customUi/CategoryWidget.dart';
 import 'package:thrifters_united/customUi/ProductContainer.dart';
 import 'package:thrifters_united/customUi/ProductsGridView.dart';
-import 'package:thrifters_united/models/Product.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
 
 class Men extends StatefulWidget {
   const Men({Key key}) : super(key: key);
@@ -15,6 +17,8 @@ class Men extends StatefulWidget {
 }
 
 class _MenState extends State<Men> {
+  List<Product> products = [];
+  List<Category> selectedCategories = [];
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -78,7 +82,7 @@ class _MenState extends State<Men> {
               ],
             ),
           ),
-          StreamBuilder<QuerySnapshot>(
+          StreamBuilder<QuerySnapshot<Product>>(
             stream: ProductAPI.loadProducts(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -94,16 +98,63 @@ class _MenState extends State<Men> {
                   snapshot.data.docs.map((DocumentSnapshot document) {
                 Product product;
                 product = document.data();
-                product.productId = document.id;
                 return product;
               }).toList();
-              return ProductsGridView(
-                products: products,
-              );
+              // Wait for the widget to build before calling this function
+              SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+                FilterProvider.of(context, listen: false).setProducts(products);
+              });
+              // List<String> names = [
+              //   "Casual Dresses",
+              //   "Mini Dresses",
+              //   "Maxi Dresses",
+              //   "Sunglasses",
+              // ];
+              // products = products
+              //     .where((element) {
+              //       return element.categories
+              //           .any((element) => names.contains(element.name));
+              //     })
+              //     .where(
+              //         (element) => element.productId == "kYzWt1d8QFt5nxQBck3x")
+              //     .toList();
+              // products.clear();
+              // selectedCategories.clear();
+              // getProducts(women, names);
+              // print(products);
+              // var clearProducts = products.toSet().toList();
+              // print(clearProducts);
+              return ProductsGridView();
             },
           ),
         ],
       ),
     );
   }
+
+  // void getProducts(Category category, List<String> names) {
+  //   if (names.contains(category.name)) {
+  //     String name =
+  //         names.where((element) => names.contains(category.name)).toString();
+  //     selectedCategories.add(category);
+  //   }
+  //   category.subCategories.forEach((first) {
+  //     if (names.contains(first.name)) {
+  //       selectedCategories.add(first);
+  //     }
+  //     if (first.subCategories.length != 0) {
+  //       first.subCategories.forEach((element) {
+  //         getProducts(element, names);
+  //       });
+  //     }
+  //   });
+  //
+  //   selectedCategories.toSet().toList();
+  //   selectedCategories.forEach((first) {
+  //     print(first.name);
+  //     first.products.forEach((second) {
+  //       products.add(second);
+  //     });
+  //   });
+  // }
 }

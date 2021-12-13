@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CategoryTab extends StatefulWidget {
-  String label;
+  final String label;
 
   CategoryTab({Key key, this.label}) : super(key: key);
 

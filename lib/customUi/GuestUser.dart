@@ -42,7 +42,7 @@ class GuestUser extends StatelessWidget {
           ),
           FFButtonWidget(
             onPressed: () {
-              print('Button pressed ...');
+              Navigator.pushNamed(context, '/wishlist/authentication');
             },
             text: 'Sign in /Sign up',
             options: FFButtonOptions(

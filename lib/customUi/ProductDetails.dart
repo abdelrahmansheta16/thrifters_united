@@ -1,11 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:thrifters_united/FirebaseAPI/AuthenticationAPI.dart';
 import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:thrifters_united/models/Product.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
+import 'dialogBuilder.dart';
 
 class ProductDetailsWidget extends StatefulWidget {
   final Product product;
@@ -20,13 +24,6 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget> {
   final pageViewController = PageController();
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  String userID;
-
-  @override
-  void initState() {
-    userID = FirebaseAuth.instance.currentUser.uid;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -246,8 +243,21 @@ class _ProductDetailsWidgetState extends State<ProductDetailsWidget> {
               padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
               child: FFButtonWidget(
                 onPressed: () async {
+                  if (FirebaseAuth.instance.currentUser == null) {
+                    setState(() {
+                      showDialog(
+                        useRootNavigator: false,
+                        useSafeArea: false,
+                        context: context,
+                        builder: (BuildContext context) =>
+                            buildPopupDialog(context, 'you must sign in first'),
+                      );
+                    });
+                  }
+
                   await UserAPI.addCart(
-                      product: widget.product, userID: userID);
+                      product: widget.product,
+                      userID: FirebaseAuth.instance.currentUser.uid);
                   Navigator.pop(context);
                 },
                 text: 'Add to Cart',

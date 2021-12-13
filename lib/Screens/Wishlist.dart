@@ -1,12 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/Screens/Homescreen.dart';
 import 'package:thrifters_united/Screens/Mainscreen.dart';
+import 'package:thrifters_united/customUi/CartProductContainer.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_widgets.dart';
-import 'package:thrifters_united/pages/PlacePicker.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
 
 import '../FirebaseAPI/AuthenticationAPI.dart';
 
@@ -26,7 +29,32 @@ class _WishlistState extends State<Wishlist> {
       if (model.user == null) {
         return SignInWidget();
       }
-      return WishlistWidget();
+      return StreamBuilder<QuerySnapshot>(
+          stream: UserAPI.loadWishlist(model.user.uid),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            List<Product> products =
+                snapshot.data.docs.map((DocumentSnapshot document) {
+              Product product;
+              product = document.data();
+              return product;
+            }).toList();
+            if (products.length == 0) {
+              return WishlistWidget();
+            }
+            return ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Product currentProduct = products[index];
+                  return CartProductContainer(product: currentProduct);
+                });
+          });
     });
   }
 }

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:thrifters_united/models/Address.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
 
 class AddressAPI extends ChangeNotifier {
   GeoPoint geoPoint;

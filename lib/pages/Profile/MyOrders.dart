@@ -4,10 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
 import 'package:thrifters_united/customUi/GuestUser.dart';
-import 'package:thrifters_united/customUi/MyProfile.dart';
+import 'package:thrifters_united/customUi/AccountInfoContainer.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
-import 'package:thrifters_united/models/Order.dart';
-
+import 'package:thrifters_classes/thrifters_classes.dart';
 import '../../FirebaseAPI/AuthenticationAPI.dart';
 
 class MyOrders extends StatefulWidget {
@@ -66,84 +65,82 @@ class _MyOrdersState extends State<MyOrders> {
               return ListView.builder(
                   itemCount: orders.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return MyProfileContainer(
-                      widget: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                'First Name',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.bold),
+                    return Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              'First Name',
+                              style: FlutterFlowTheme.bodyText1.override(
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              ' : ${orders[index].price}',
+                              style: FlutterFlowTheme.bodyText1.override(
+                                fontFamily: 'Poppins',
                               ),
-                              Text(
-                                ' : ${orders[index].price}',
-                                style: FlutterFlowTheme.bodyText1.override(
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              'Last Name',
+                              style: FlutterFlowTheme.bodyText1.override(
                                   fontFamily: 'Poppins',
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                'Last Name',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              ' : ${orders[index].orderID}',
+                              style: FlutterFlowTheme.bodyText1.override(
+                                fontFamily: 'Poppins',
                               ),
-                              Text(
-                                ' : ${orders[index].orderID}',
-                                style: FlutterFlowTheme.bodyText1.override(
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              'Gender',
+                              style: FlutterFlowTheme.bodyText1.override(
                                   fontFamily: 'Poppins',
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                'Gender',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              ' : ',
+                              style: FlutterFlowTheme.bodyText1.override(
+                                fontFamily: 'Poppins',
                               ),
-                              Text(
-                                ' : ',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Poppins',
-                                ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                'Birthday',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Poppins',
-                                ),
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              'Birthday',
+                              style: FlutterFlowTheme.bodyText1.override(
+                                fontFamily: 'Poppins',
                               ),
-                              Text(
-                                ' : ',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Poppins',
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                      string: 'Order #' + (index + 1).toString(),
+                            ),
+                            Text(
+                              ' : ',
+                              style: FlutterFlowTheme.bodyText1.override(
+                                fontFamily: 'Poppins',
+                              ),
+                            )
+                          ],
+                        )
+                      ],
                     );
+                    // string: 'Order #' + (index + 1).toString(),;
                   });
             },
           );

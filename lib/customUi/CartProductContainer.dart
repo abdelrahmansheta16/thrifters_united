@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
-import 'package:thrifters_united/models/Product.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
 
 class CartProductContainer extends StatelessWidget {
   final Product product;
