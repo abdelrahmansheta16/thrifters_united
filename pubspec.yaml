@@ -72,6 +72,10 @@ dependencies:
   progress_indicators: ^1.0.0
   group_radio_button: ^1.1.0
   flutter_typeahead: ^3.2.4
+  collection: ^1.15.0
+  bottom_sheet: ^1.0.5
+  quiver: ^3.0.1+1
+  eva_icons_flutter: ^3.0.2
 
 
 dev_dependencies:

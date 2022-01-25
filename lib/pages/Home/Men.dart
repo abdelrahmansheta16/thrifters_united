@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
+import 'package:thrifters_classes/thrifters_classes.dart';
 import 'package:thrifters_united/FirebaseAPI/FilterProvider.dart';
 import 'package:thrifters_united/FirebaseAPI/ProductAPI.dart';
 import 'package:thrifters_united/customUi/CategoryWidget.dart';
-import 'package:thrifters_united/customUi/ProductContainer.dart';
-import 'package:thrifters_united/customUi/ProductsGridView.dart';
-import 'package:thrifters_classes/thrifters_classes.dart';
+import 'package:thrifters_united/customUi/HomeBrands.dart';
+import 'package:thrifters_united/customUi/HomeCategories.dart';
 
 class Men extends StatefulWidget {
   const Men({Key key}) : super(key: key);
@@ -17,144 +17,154 @@ class Men extends StatefulWidget {
 }
 
 class _MenState extends State<Men> {
-  List<Product> products = [];
-  List<Category> selectedCategories = [];
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ScrollPhysics(),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-            child: GridView(
-              padding: EdgeInsets.zero,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 15,
-                childAspectRatio: 0.9,
+    return StreamBuilder<QuerySnapshot<Category>>(
+        stream: FilterProvider.CategoryRef.snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return SizedBox();
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: CircularProgressIndicator(
+              color: Colors.white,
+            ));
+          }
+          Category men = snapshot.data.docs
+              .where((element) => element.data().name == 'men')
+              .first
+              .data();
+          return Theme(
+            data: Theme.of(context).copyWith(
+                colorScheme: ColorScheme.fromSwatch()
+                    .copyWith(secondary: Colors.white10)),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: GridView(
+                      physics: ClampingScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 15,
+                        childAspectRatio: 0.9,
+                      ),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        CategoryWidget(
+                          label: 'Clothing',
+                          imageUrl:
+                              'https://media1.popsugar-assets.com/files/thumbor/z22quvISaDXf8qnf43Pjt6SSsa8/0x0:1493x1493/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2021/04/16/940/n/1922564/cfe0e806607a02e186b0e6.36330996_/i/Basic-Clothing-Women.png',
+                        ),
+                        CategoryWidget(
+                          label: 'Sportswear',
+                          imageUrl:
+                              'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/28e57f39-4902-47ed-a7c4-a2c81573dac4/sportswear-mid-rise-7-8-leggings-hqBVwb.png',
+                        ),
+                        CategoryWidget(
+                          label: 'Beauty',
+                          imageUrl:
+                              'https://i.pinimg.com/originals/f2/54/42/f25442022fab358f52a5bc9490a37664.jpg',
+                        ),
+                        CategoryWidget(
+                          label: 'Homeware',
+                          imageUrl:
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThNxmuGc9Hg6dRChwdobdvGR95yOql46YnLw&usqp=CAU',
+                        ),
+                        CategoryWidget(
+                          imageUrl:
+                              'https://discoverymood.com/wp-content/uploads/2020/04/Mental-Strong-Women-min.jpg',
+                          label: 'Thrifters',
+                        ),
+                        CategoryWidget(
+                          label: 'Bags',
+                          imageUrl:
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9_L4uIY0WPAEUA4pD9ncQzeJiZNDaXmYU6g&usqp=CAU',
+                        ),
+                        CategoryWidget(
+                          label: 'Shoes',
+                          imageUrl:
+                              'https://i.ytimg.com/vi/TglF71febNY/maxresdefault.jpg',
+                        ),
+                        CategoryWidget(
+                          label: 'Accessories',
+                          imageUrl:
+                              'https://i.pinimg.com/originals/43/1c/17/431c177e8f79d728cc671003f1ab17cf.jpg',
+                        )
+                      ],
+                    ),
+                  ),
+                  HomeBrands(),
+                  HomeCategories(
+                    category: men.subCategories
+                        .where((element) => element.name == 'Clothing')
+                        .first,
+                    categoryPath: ['men', 'Clothing'],
+                    title: 'Clothing',
+                    parentPath: ['men'],
+                  ),
+                  HomeCategories(
+                    category: men.subCategories
+                        .where((element) => element.name == 'Clothing')
+                        .first
+                        .subCategories
+                        .where((element) => element.name == 'Sportswear')
+                        .first,
+                    categoryPath: ['men', 'Clothing', 'Sportswear'],
+                    title: 'Sportswear',
+                    parentPath: ['men', 'Clothing'],
+                  ),
+                  HomeCategories(
+                    category: men.subCategories
+                        .where((element) => element.name == 'Grooming')
+                        .first,
+                    categoryPath: ['men', 'Grooming'],
+                    title: 'Grooming',
+                    parentPath: ['men'],
+                  ),
+                  HomeCategories(
+                    category: men.subCategories
+                        .where((element) => element.name == 'Home & LifeStyle')
+                        .first,
+                    categoryPath: ['men', 'Home & LifeStyle'],
+                    title: 'Home & LifeStyle',
+                    parentPath: ['men'],
+                  ),
+                  HomeCategories(
+                    category: men.subCategories
+                        .where((element) => element.name == 'Bags')
+                        .first,
+                    categoryPath: ['men', 'Bags'],
+                    title: 'Bags',
+                    parentPath: ['men'],
+                  ),
+                  HomeCategories(
+                    category: men.subCategories
+                        .where((element) => element.name == 'Shoes')
+                        .first,
+                    categoryPath: ['men', 'Shoes'],
+                    title: 'Shoes',
+                    parentPath: ['men'],
+                  ),
+                  HomeCategories(
+                    category: men.subCategories
+                        .where((element) => element.name == 'Accessories')
+                        .first,
+                    categoryPath: ['men', 'Accessories'],
+                    title: 'Accessories',
+                    parentPath: ['men'],
+                  ),
+                ],
               ),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              children: [
-                CategoryWidget(
-                  label: 'Clothing',
-                  imageUrl:
-                      'https://i.pinimg.com/originals/84/48/af/8448af80944eaca909874361f6009221.png',
-                ),
-                CategoryWidget(
-                  label: 'Sportswear',
-                  imageUrl:
-                      'https://static.toiimg.com/thumb/msid-71614991,width-1200,height-900,resizemode-4/.jpg',
-                ),
-                CategoryWidget(
-                  label: 'Grooming',
-                  imageUrl:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbg9Z1eSNRn25I4JC4muRwJf5m2hUBm2O9FQ&usqp=CAU',
-                ),
-                CategoryWidget(
-                  label: 'Homeware',
-                  imageUrl:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk0bQYA0rOoEOz2huiYHneBlvdAgYQ5LvI7A&usqp=CAU',
-                ),
-                CategoryWidget(
-                  imageUrl:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3o3H143Vgkfz6nBKJWnxYbuReFq87lj7W3g&usqp=CAU',
-                  label: 'Thrifters',
-                ),
-                CategoryWidget(
-                  label: 'Bags',
-                  imageUrl:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwrV_neQ26i4AgcbeqHFzifRyzBVwb50Sa9Q&usqp=CAU',
-                ),
-                CategoryWidget(
-                  label: 'Shoes',
-                  imageUrl:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrE_8L_ueAvoqoaH1LsdbSbyjBSMT5RSVXEQ&usqp=CAU',
-                ),
-                CategoryWidget(
-                  label: 'Accessories',
-                  imageUrl:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWp08M8eBREbrMszik4eudJlyUSgpcv5FKNQ&usqp=CAU',
-                )
-              ],
             ),
-          ),
-          StreamBuilder<QuerySnapshot<Product>>(
-            stream: ProductAPI.loadProducts(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                print(snapshot.error);
-                return Text('Something went wrong');
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              List<Product> products =
-                  snapshot.data.docs.map((DocumentSnapshot document) {
-                Product product;
-                product = document.data();
-                return product;
-              }).toList();
-              // Wait for the widget to build before calling this function
-              SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-                FilterProvider.of(context, listen: false).setProducts(products);
-              });
-              // List<String> names = [
-              //   "Casual Dresses",
-              //   "Mini Dresses",
-              //   "Maxi Dresses",
-              //   "Sunglasses",
-              // ];
-              // products = products
-              //     .where((element) {
-              //       return element.categories
-              //           .any((element) => names.contains(element.name));
-              //     })
-              //     .where(
-              //         (element) => element.productId == "kYzWt1d8QFt5nxQBck3x")
-              //     .toList();
-              // products.clear();
-              // selectedCategories.clear();
-              // getProducts(women, names);
-              // print(products);
-              // var clearProducts = products.toSet().toList();
-              // print(clearProducts);
-              return ProductsGridView();
-            },
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
-
-  // void getProducts(Category category, List<String> names) {
-  //   if (names.contains(category.name)) {
-  //     String name =
-  //         names.where((element) => names.contains(category.name)).toString();
-  //     selectedCategories.add(category);
-  //   }
-  //   category.subCategories.forEach((first) {
-  //     if (names.contains(first.name)) {
-  //       selectedCategories.add(first);
-  //     }
-  //     if (first.subCategories.length != 0) {
-  //       first.subCategories.forEach((element) {
-  //         getProducts(element, names);
-  //       });
-  //     }
-  //   });
-  //
-  //   selectedCategories.toSet().toList();
-  //   selectedCategories.forEach((first) {
-  //     print(first.name);
-  //     first.products.forEach((second) {
-  //       products.add(second);
-  //     });
-  //   });
-  // }
 }

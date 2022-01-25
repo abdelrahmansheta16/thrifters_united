@@ -61,6 +61,8 @@ class ProductAPI {
     return CategoryRef.snapshots();
   }
 
+
+
   // static Category searchCategory(
   //     Category category, Product product, List<String> names) {
   //   if (names.contains(category.name)) {

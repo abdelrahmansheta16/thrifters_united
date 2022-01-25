@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CategoryWidget extends StatefulWidget {
-  String imageUrl;
-  String label;
+  final String imageUrl;
+ final String label;
 
   CategoryWidget({Key key, this.imageUrl, this.label}) : super(key: key);
 

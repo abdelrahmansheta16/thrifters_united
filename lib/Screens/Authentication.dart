@@ -1,3 +1,4 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
@@ -109,7 +110,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget> {
                               },
                               text: 'Facebook',
                               icon: Icon(
-                                Icons.add,
+                                EvaIcons.plus,
                                 color: Colors.transparent,
                                 size: 20,
                               ),
@@ -182,7 +183,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget> {
                               },
                               text: 'Google',
                               icon: Icon(
-                                Icons.add,
+                                EvaIcons.plus,
                                 color: Colors.transparent,
                                 size: 20,
                               ),

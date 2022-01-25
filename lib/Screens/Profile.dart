@@ -1,3 +1,4 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -145,7 +146,7 @@ class _ProfileState extends State<Profile> {
                             Padding(
                               padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                               child: Icon(
-                                Icons.settings_outlined,
+                                EvaIcons.settings2Outline,
                                 color: Colors.black,
                                 size: 24,
                               ),
@@ -176,7 +177,7 @@ class _ProfileState extends State<Profile> {
                               Padding(
                                 padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
                                 child: Icon(
-                                  Icons.card_giftcard_sharp,
+                                  EvaIcons.giftOutline,
                                   color: Colors.black,
                                   size: 24,
                                 ),

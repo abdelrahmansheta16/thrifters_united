@@ -28,6 +28,8 @@ class _ProductContainerState extends State<ProductContainer> {
           ));
         },
         child: Container(
+          width: 200,
+          height: 200,
           decoration: BoxDecoration(
             color: Colors.white,
           ),

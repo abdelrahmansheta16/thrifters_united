@@ -14,57 +14,55 @@ class _KidsState extends State<Kids> {
   @override
   Widget build(BuildContext context) {
     return VerticalTabs(
-      tabsWidth: MediaQuery.of(context).size.width * 0.32,
-      tabBackgroundColor: Colors.white,
-      selectedTabBackgroundColor: Color(0xff51c0a9),
-      selectedTabTextStyle: TextStyle(color: Colors.black),
-      tabTextStyle: TextStyle(color: Colors.black38),
-      tabs: [
-        Tab(
-          child: CategoryTab(
-            label: 'Category',
-          ),
+        indicatorWidth: 0,
+        selectedTabTextStyle: TextStyle(
+          color: Colors.black,
         ),
-        Tab(
-          child: CategoryTab(
-            label: 'Category',
+        selectedTabBackgroundColor: Colors.white,
+        tabsWidth: MediaQuery.of(context).size.width * 0.33,
+        tabs: [
+          Tab(
+            text: 'Promotions',
           ),
-        ),
-        Tab(
-          child: CategoryTab(
-            label: 'Category',
+          Tab(
+            text: 'Sale',
           ),
-        ),
-        Tab(
-          child: CategoryTab(
-            label: 'Category',
+          Tab(
+            text: 'Shop by age',
           ),
-        ),
-        Tab(
-          child: CategoryTab(
-            label: 'Category',
+          Tab(
+            text: 'Girls',
           ),
-        ),
-        Tab(
-          child: CategoryTab(
-            label: 'Category',
+          Tab(
+            text: 'Boys',
           ),
-        ),
-        Tab(
-          child: CategoryTab(
-            label: 'Category',
+          Tab(
+            text: 'Sports',
           ),
-        ),
-      ],
-      contents: [
-        Container(child: Text('Flutter'), padding: EdgeInsets.all(20)),
-        Container(child: Text('Flutter'), padding: EdgeInsets.all(20)),
-        Container(child: Text('Flutter'), padding: EdgeInsets.all(20)),
-        Container(child: Text('Flutter'), padding: EdgeInsets.all(20)),
-        Container(child: Text('Flutter'), padding: EdgeInsets.all(20)),
-        Container(child: Text('Flutter'), padding: EdgeInsets.all(20)),
-        Container(child: Text('Flutter'), padding: EdgeInsets.all(20)),
-      ],
-    );
+          Tab(
+            text: 'Brands',
+          ),
+          Tab(
+            text: 'Homeware',
+          ),
+          Tab(
+            text: 'Premium',
+          ),
+          Tab(
+            text: 'Gifts',
+          ),
+        ],
+        contents: [
+          Container(),
+          Container(),
+          Container(),
+          Container(),
+          Container(),
+          Container(),
+          Container(),
+          Container(),
+          Container(),
+          Container(),
+        ]);
   }
 }

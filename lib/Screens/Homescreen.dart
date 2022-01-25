@@ -1,15 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:thrifters_classes/thrifters_classes.dart';
 import 'package:thrifters_classes/utils.dart';
-import 'package:thrifters_united/constants.dart';
-import 'package:thrifters_united/customUi/Filter.dart';
+import 'package:thrifters_united/FirebaseAPI/ProductAPI.dart';
 import 'package:thrifters_united/customUi/FilteredProducts.dart';
-import 'package:thrifters_united/customUi/SearchProductWidget.dart';
-import 'package:thrifters_united/models/Product.dart';
-import 'package:thrifters_united/pages/Home/Brands.dart';
 import 'package:thrifters_united/pages/Home/Kids.dart';
 import 'package:thrifters_united/pages/Home/Men.dart';
 import 'package:thrifters_united/pages/Home/Women.dart';
@@ -23,327 +19,1287 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
+  //
   // @override
   // void initState() {
-  //   brands.forEach((element) {
+  //   priceRanges.forEach((element) {
   //     FirebaseFirestore.instance
-  //         .collection('brands')
-  //         .withConverter<Brand>(
-  //           fromFirestore: (snapshot, _) => Brand.fromJson(snapshot.data()),
-  //           toFirestore: (brand, _) => brand.toJson(),
+  //         .collection('price ranges')
+  //         .withConverter<PriceRange>(
+  //           fromFirestore: (snapshot, _) =>
+  //               PriceRange.fromJson(snapshot.data()),
+  //           toFirestore: (range, _) => range.toJson(),
   //         )
   //         .add(element);
   //   });
   //   super.initState();
   // }
-  // @override
-  // void initState() {
-  //   Category kids = Category(name: 'kids', level: -1, subCategories: [
-  //     Category(name: 'Clothing', level: 0, subCategories: [
-  //       Category(name: "Dresses", level: 1, subCategories: [
-  //         Category(name: "Casual Dresses", level: 2),
-  //         Category(name: "Mini Dresses", level: 2),
-  //         Category(name: "Maxi Dresses", level: 2),
-  //         Category(name: "Evening Dresses", level: 2),
-  //         Category(name: "Event Dresses", level: 2),
-  //         Category(name: "Formal Dresses", level: 2),
-  //         Category(name: "Party Dresses", level: 2),
-  //       ]),
-  //       Category(name: "Tops", level: 1, subCategories: [
-  //         Category(name: "Long Sleeve Tops", level: 2),
-  //         Category(name: "Shirts & Blouses", level: 2),
-  //         Category(name: "Tunics", level: 2),
-  //         Category(name: "Short Sleeve Tops", level: 2),
-  //         Category(name: "Sleeveless Tops", level: 2),
-  //         Category(name: "Body & Cropped", level: 2),
-  //       ]),
-  //       Category(name: "T-Shirts & Vests", level: 1, subCategories: [
-  //         Category(name: "Short Sleeve T-shirt", level: 2),
-  //         Category(name: "Long Sleeve T-shirt", level: 2),
-  //         Category(name: "Vests", level: 2),
-  //       ]),
-  //       Category(name: "Cardigans & Sweaters", level: 1, subCategories: [
-  //         Category(name: "Sweaters", level: 2),
-  //         Category(name: "Cardigans", level: 2),
-  //       ]),
-  //       Category(name: "Pants & Leggings", level: 1, subCategories: [
-  //         Category(name: "Pants", level: 2),
-  //         Category(name: "Sweatpants", level: 2),
-  //         Category(name: "Sets", level: 2),
-  //         Category(name: "Leggings", level: 2),
-  //       ]),
-  //       Category(name: "Arabian Clothing", level: 1, subCategories: [
-  //         Category(name: "Tops", level: 2),
-  //         Category(name: "Dresses", level: 2),
-  //         Category(name: "Bottoms", level: 2),
-  //         Category(name: "Sets", level: 2),
-  //         Category(name: "Abayas", level: 2),
-  //         Category(name: "Jalabiyas", level: 2),
-  //         Category(name: "Kaftans", level: 2),
-  //       ]),
-  //       Category(name: "Hoodies & Sweatshirts", level: 1, subCategories: [
-  //         Category(name: "Sweatshirts", level: 2),
-  //         Category(name: "Hoodies", level: 2),
-  //       ]),
-  //       Category(name: "Nightwear", level: 1, subCategories: [
-  //         Category(name: "All Nightwear", level: 2),
-  //         Category(name: "Pyjamas", level: 2),
-  //         Category(name: "Nighties & Sleep Shirts", level: 2),
-  //         Category(name: "Bedroom Slippers", level: 2),
-  //         Category(name: "Robes", level: 2),
-  //         Category(name: "Slips", level: 2),
-  //         Category(name: "Onesies", level: 2),
-  //         Category(name: "Loungewear", level: 2),
-  //       ]),
-  //       Category(name: "Sportswear", level: 1, subCategories: [
-  //         Category(name: "T-Shirts", level: 2),
-  //         Category(name: "Bottom", level: 2),
-  //         Category(name: "Hoodies & Sweatshirts", level: 2),
-  //         Category(name: "Sports Bras", level: 2),
-  //         Category(name: "Jackets", level: 2),
-  //         Category(name: "Shorts", level: 2),
-  //         Category(name: "Sets", level: 2),
-  //       ]),
-  //       Category(name: "Lingerie", level: 1, subCategories: [
-  //         Category(name: "Bras", level: 2),
-  //         Category(name: "Briefs", level: 2),
-  //         Category(name: "Training", level: 2),
-  //         Category(name: "Lingerie", level: 2),
-  //         Category(name: "Backless Bras", level: 2),
-  //         Category(name: "Slips", level: 2),
-  //         Category(name: "Bodies & Corsets", level: 2),
-  //       ]),
-  //       Category(name: "Jackets & Coats", level: 1, subCategories: [
-  //         Category(name: "Jackets", level: 2),
-  //         Category(name: "Coats", level: 2),
-  //         Category(name: "Blazers", level: 2),
-  //       ]),
-  //       Category(name: "Shorts", level: 1, subCategories: [
-  //         Category(name: "Mini", level: 2),
-  //         Category(name: "Denim", level: 2),
-  //         Category(name: "Sets", level: 2),
-  //       ]),
-  //       Category(name: "Multi packs", level: 1, subCategories: [
-  //         Category(name: "Lingerie", level: 2),
-  //         Category(name: "Pants & Leggings", level: 2),
-  //         Category(name: "Cardigans & Sweaters", level: 2),
-  //         Category(name: "Nightwear", level: 2),
-  //         Category(name: "T-shirts & Vests", level: 2),
-  //       ]),
-  //       Category(name: "Socks & Hosiery", level: 1),
-  //       Category(name: "Indian Clothing", level: 1, subCategories: [
-  //         Category(name: "Dresses", level: 2),
-  //         Category(name: "Tops", level: 2),
-  //         Category(name: "Tunics", level: 2),
-  //         Category(name: "Kurtis", level: 2),
-  //         Category(name: "Dupattas", level: 2),
-  //         Category(name: "Pants", level: 2),
-  //         Category(name: "Skirts", level: 2),
-  //         Category(name: "Sarees", level: 2),
-  //         Category(name: "Jackets", level: 2),
-  //       ]),
-  //       Category(name: "Maternity Clothing", level: 1, subCategories: [
-  //         Category(name: "Tops", level: 2),
-  //         Category(name: "Pants & Lingerie", level: 2),
-  //         Category(name: "Lingerie & Nightwear", level: 2),
-  //         Category(name: "Dresses", level: 2),
-  //         Category(name: "Skirts", level: 2),
-  //         Category(name: "Jeans", level: 2),
-  //       ]),
-  //       Category(name: "Kimonos & Capes", level: 1),
-  //       Category(name: "Petite Clothing", level: 1, subCategories: [
-  //         Category(name: "Pants & Leggings", level: 2),
-  //         Category(name: "Jeans", level: 2),
-  //         Category(name: "Jackets & Coats", level: 2),
-  //       ]),
-  //       Category(name: "Tall Clothing", level: 1),
-  //     ]),
-  //     Category(name: 'Accessories', level: 0, subCategories: [
-  //       Category(name: "Homeware", level: 1, subCategories: [
-  //         Category(name: "Kitchenware", level: 2),
-  //         Category(name: "Decorative Accessories", level: 2),
-  //         Category(name: "Soft Furnishings", level: 2),
-  //         Category(name: "Candles & Scents", level: 2),
-  //         Category(name: "Clocks", level: 2),
-  //         Category(name: "Books", level: 2),
-  //       ]),
-  //       Category(name: "Jewelery", level: 1, subCategories: [
-  //         Category(name: "Earnings", level: 2),
-  //         Category(name: "Necklaces", level: 2),
-  //         Category(name: "Bracelets", level: 2),
-  //         Category(name: "Rings", level: 2),
-  //         Category(name: "Sets", level: 2),
-  //         Category(name: "Anklets", level: 2),
-  //         Category(name: "Keyrings", level: 2),
-  //         Category(name: "Pins & Badges", level: 2),
-  //       ]),
-  //       Category(name: "Headwear", level: 1, subCategories: [
-  //         Category(name: "Headbands", level: 2),
-  //         Category(name: "Hats", level: 2),
-  //         Category(name: "Face Masks", level: 2),
-  //         Category(name: "Hijab", level: 2),
-  //       ]),
-  //       Category(name: "Sunglasses", level: 1),
-  //       Category(name: "Watches", level: 1, subCategories: [
-  //         Category(name: "Analog Watches", level: 2),
-  //         Category(name: "Digital Watches", level: 2),
-  //         Category(name: "Smart Watches", level: 2),
-  //         Category(name: "Sports Lifestyle Watches", level: 2),
-  //       ]),
-  //       Category(name: "Scarves", level: 1),
-  //       Category(name: "Belts", level: 1),
-  //       Category(name: "Travel Accessories", level: 1, subCategories: [
-  //         Category(name: "Flight Accessories", level: 2),
-  //         Category(name: "Beach Towels", level: 2),
-  //         Category(name: "Pool Floats", level: 2),
-  //         Category(name: "Luggage Tags & Passport Holders", level: 2),
-  //         Category(name: "Umbrellas", level: 2),
-  //       ]),
-  //       Category(name: "Multipacks", level: 1),
-  //       Category(name: "Sports Accessories", level: 1),
-  //     ]),
-  //     Category(name: 'Beauty', level: 0, subCategories: [
-  //       Category(name: "Makeup", level: 1, subCategories: [
-  //         Category(name: "Face", level: 2),
-  //         Category(name: "Lips", level: 2),
-  //         Category(name: "Eyes", level: 2),
-  //         Category(name: "Accessories", level: 2),
-  //       ]),
-  //       Category(name: "Bath & Body", level: 1, subCategories: [
-  //         Category(name: "Anti-Aging", level: 2),
-  //         Category(name: "Moisturizer", level: 2),
-  //         Category(name: "Facial Cleansers", level: 2),
-  //         Category(name: "Scrubs & Exfoliates", level: 2),
-  //         Category(name: "Sun Protection & Tanning", level: 2),
-  //         Category(name: "Deodorants", level: 2),
-  //         Category(name: "Soaps", level: 2),
-  //         Category(name: "Body Wash", level: 2),
-  //         Category(name: "Body Salts", level: 2),
-  //       ]),
-  //       Category(name: "Hair Care", level: 1, subCategories: [
-  //         Category(name: "Other", level: 2),
-  //         Category(name: "Shampoo", level: 2),
-  //         Category(name: "Conditioner", level: 2),
-  //         Category(name: "Styling Tools", level: 2),
-  //       ]),
-  //       Category(name: "Fragrances", level: 1, subCategories: [
-  //         Category(name: "Eau de Parfum", level: 2),
-  //         Category(name: "Eau de Toilette", level: 2),
-  //       ]),
-  //       Category(name: "Gift Sets", level: 1, subCategories: [
-  //         Category(name: "Bath & Body", level: 2),
-  //         Category(name: "Fragrances & Body Lotion", level: 2),
-  //       ]),
-  //       Category(name: "Nail Care", level: 1, subCategories: [
-  //         Category(name: "Nail Polish", level: 2),
-  //         Category(name: "Nail Treatment", level: 2),
-  //         Category(name: "Nail Polish Remover", level: 2),
-  //       ]),
-  //       Category(name: "Health & Wellbeing", level: 1, subCategories: [
-  //         Category(name: "De-Stress & Relax", level: 2),
-  //         Category(name: "Sleep", level: 2),
-  //         Category(name: "Superfoods & Supplements", level: 2),
-  //       ]),
-  //     ]),
-  //     Category(name: 'Home & LifeStyle', level: 0, subCategories: [
-  //       Category(name: "Home", level: 1, subCategories: [
-  //         Category(name: "Living", level: 2),
-  //         Category(name: "Kitchen", level: 2),
-  //         Category(name: "Party Supplies", level: 2),
-  //         Category(name: "Bedroom", level: 2),
-  //         Category(name: "Games & Puzzles", level: 2),
-  //         Category(name: "Bathroom", level: 2),
-  //         Category(name: "Home Fragrance", level: 2),
-  //         Category(name: "Outdoor", level: 2),
-  //       ]),
-  //       Category(name: "Kitchen & Dining", level: 1, subCategories: [
-  //         Category(name: "Mugs", level: 2),
-  //         Category(name: "Water Bottles & Travel Mugs", level: 2),
-  //         Category(name: "Dinnerware & Serveware", level: 2),
-  //         Category(name: "Storage & Accessories", level: 2),
-  //         Category(name: "Cafetieres, Tea Pots & Tea Sets", level: 2),
-  //         Category(name: "Cooking & Baking", level: 2),
-  //         Category(name: "Glassware", level: 2),
-  //         Category(name: "Oven Gloves, Tea Towels & Aprons", level: 2),
-  //         Category(name: "Lunch Bags & Boxes", level: 2),
-  //         Category(name: "Kitchen Appliances", level: 2),
-  //         Category(name: "Outdoor", level: 2),
-  //       ]),
-  //       Category(name: "Stationary", level: 1, subCategories: [
-  //         Category(name: "Notebook", level: 2),
-  //         Category(name: "Pens & Pencils", level: 2),
-  //         Category(name: "Desk Essentials", level: 2),
-  //         Category(name: "Pencil Cases", level: 2),
-  //         Category(name: "Stationery Sets", level: 2),
-  //         Category(name: "Planners", level: 2),
-  //       ]),
-  //       Category(name: "Technology", level: 1, subCategories: [
-  //         Category(name: "Tech Accessories", level: 2),
-  //         Category(name: "Photography", level: 2),
-  //         Category(name: "Audio", level: 2),
-  //         Category(name: "Games", level: 2),
-  //       ]),
-  //       Category(name: "Candles & Home Fragrance", level: 1, subCategories: [
-  //         Category(name: "Candles", level: 2),
-  //         Category(name: "Diffusers & Room Sprays", level: 2),
-  //         Category(name: "Incense & Holders", level: 2),
-  //         Category(name: "Candle Holders & Accessories", level: 2),
-  //       ]),
-  //     ]),
-  //     Category(name: 'Shoes', level: 0, subCategories: [
-  //       Category(name: "Sneakers", level: 1, subCategories: [
-  //         Category(name: "Low-top Sneakers", level: 2),
-  //         Category(name: "High-top Sneakers", level: 2),
-  //       ]),
-  //       Category(name: "Sandals", level: 1, subCategories: [
-  //         Category(name: "Flat Sandals", level: 2),
-  //         Category(name: "Mid-Heel Sandals", level: 2),
-  //         Category(name: "High-Heel Sandals", level: 2),
-  //         Category(name: "Wedge Sandals", level: 2),
-  //       ]),
-  //       Category(name: "Sports Shoes", level: 1),
-  //       Category(name: "Flat Shoes", level: 1, subCategories: [
-  //         Category(name: "Ballerinas", level: 2),
-  //         Category(name: "Moccasins", level: 2),
-  //         Category(name: "Slip Ons", level: 2),
-  //         Category(name: "Espadrilles", level: 2),
-  //       ]),
-  //       Category(name: "Pumps", level: 1, subCategories: [
-  //         Category(name: "High-Heel Pumps", level: 2),
-  //         Category(name: "Mid-Heel Pumps", level: 2),
-  //         Category(name: "Wedge Pumps", level: 2),
-  //       ]),
-  //       Category(name: "Boots", level: 1, subCategories: [
-  //         Category(name: "Ankle Boots", level: 2),
-  //         Category(name: "Knee Boots", level: 2),
-  //       ]),
-  //       Category(name: "Bedroom Slippers", level: 1),
-  //       Category(name: "Comfort Shoes", level: 1),
-  //       Category(name: "Flip Flops", level: 1),
-  //     ]),
-  //     Category(name: 'Bags', level: 0, subCategories: [
-  //       Category(name: "Handbags", level: 1, subCategories: [
-  //         Category(name: "Crossbody", level: 2),
-  //         Category(name: "Shoppers\\Totes", level: 2),
-  //         Category(name: "Satchels", level: 2),
-  //         Category(name: "Clutches", level: 2),
-  //         Category(name: "Backpacks", level: 2),
-  //         Category(name: "Hobo", level: 2),
-  //         Category(name: "Duffel Bags", level: 2),
-  //       ]),
-  //       Category(name: "Small Leather Goods", level: 1),
-  //       Category(name: "Sports Bags", level: 1, subCategories: [
-  //         Category(name: "Backpacks", level: 2),
-  //         Category(name: "Duffel Bags", level: 2),
-  //         Category(name: "Shoppers\\Totes", level: 2),
-  //       ]),
-  //       Category(name: "Cosmetic Bags", level: 1),
-  //     ]),
-  //   ]);
-  //   ProductAPI.addCategory(category: kids, categoryName: "kids");
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    Category kids = Category(name: 'kids', level: -1, subCategories: [
+      Category(
+        name: 'Clothing',
+        parentCategory: 'kids',
+        level: 0,
+        subCategories: [
+          Category(
+            name: 'Girls',
+            level: 1,
+            parentCategory: 'Clothing',
+            subCategories: [
+              Category(
+                  name: "T-Shirts & Vests",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Short Sleeve T-shirt",
+                        parentCategory: 'T-Shirts & Vests',
+                        level: 2),
+                    Category(
+                        name: "Long Sleeve T-shirt",
+                        parentCategory: 'T-Shirts & Vests',
+                        level: 2),
+                    Category(
+                        name: "Vests",
+                        parentCategory: 'T-Shirts & Vests',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Cardigans & Sweaters",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Sweaters",
+                        parentCategory: 'Cardigans & Sweaters',
+                        level: 2),
+                    Category(
+                        name: "Cardigans",
+                        parentCategory: 'Cardigans & Sweaters',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Pants & Chinos",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Pants",
+                        parentCategory: 'Pants & Chinos',
+                        level: 2),
+                    Category(
+                        name: "Sweatpants",
+                        parentCategory: 'Pants & Chinos',
+                        level: 2),
+                    Category(
+                        name: "Chinos Pants",
+                        parentCategory: 'Pants & Chinos',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Hoodies & Sweatshirts",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Sweatshirts",
+                        parentCategory: 'Hoodies & Sweatshirts',
+                        level: 2),
+                    Category(
+                        name: "Hoodies",
+                        parentCategory: 'Hoodies & Sweatshirts',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Nightwear",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Sets", parentCategory: 'Nightwear', level: 2),
+                    Category(
+                        name: "Bottoms", parentCategory: 'Nightwear', level: 2),
+                    Category(
+                        name: "Tops", parentCategory: 'Nightwear', level: 2),
+                  ]),
+              Category(
+                  name: "Sportswear",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "T-Shirts & Vests",
+                        parentCategory: 'Sportswear',
+                        level: 2),
+                    Category(
+                        name: "Bottom", parentCategory: 'Sportswear', level: 2),
+                    Category(
+                        name: "Polo", parentCategory: 'Sportswear', level: 2),
+                    Category(
+                        name: "Sports Bras",
+                        parentCategory: 'Sportswear',
+                        level: 2),
+                    Category(
+                        name: "Jackets",
+                        parentCategory: 'Sportswear',
+                        level: 2),
+                    Category(
+                        name: "Shorts", parentCategory: 'Sportswear', level: 2),
+                    Category(
+                        name: "Sets", parentCategory: 'Sportswear', level: 2),
+                  ]),
+              Category(
+                  name: "Jackets & Coats",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Jackets",
+                        parentCategory: 'Jackets & Coats',
+                        level: 2),
+                    Category(
+                        name: "Coats",
+                        parentCategory: 'Jackets & Coats',
+                        level: 2),
+                    Category(
+                        name: "Blazers",
+                        parentCategory: 'Jackets & Coats',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Jeans",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Straight Jeans",
+                        parentCategory: 'Jeans',
+                        level: 2),
+                    Category(
+                        name: "Slim Jeans", parentCategory: 'Jeans', level: 2),
+                    Category(
+                        name: "Relaxed Jeans",
+                        parentCategory: 'Jeans',
+                        level: 2),
+                    Category(
+                        name: "Skinny Jeans",
+                        parentCategory: 'Jeans',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Polo Shirts",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Sports Polos",
+                        parentCategory: 'Shorts',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Shorts",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Sports Shorts",
+                        parentCategory: 'Shorts',
+                        level: 2),
+                    Category(
+                        name: "Shorts", parentCategory: 'Shorts', level: 2),
+                    Category(
+                        name: "Lounge Shorts",
+                        parentCategory: 'Shorts',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Multi packs",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Pants & Chinos",
+                        parentCategory: 'Multi packs',
+                        level: 2),
+                    Category(
+                        name: "Underwear & Socks",
+                        parentCategory: 'Multi packs',
+                        level: 2),
+                    Category(
+                        name: "Shorts",
+                        parentCategory: 'Multi packs',
+                        level: 2),
+                    Category(
+                        name: "T-shirts & Vests",
+                        parentCategory: 'Multi packs',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Indian Clothing",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Kurtis",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Bottoms",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Jackets",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Plus Size Clothing",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Shirts",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "T-shirts & Vests",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Jackets & Coats",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Hoodies & Sweatshirts",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Shorts",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Swimwear",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Classic Shorts",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Indian Clothing",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Kurtis",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Bottoms",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Jackets",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                  ]),
+            ],
+          ),
+          Category(
+            name: 'Boys',
+            level: 1,
+            parentCategory: 'Clothing',
+            subCategories: [
+              Category(
+                  name: "T-Shirts & Vests",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Short Sleeve T-shirt",
+                        parentCategory: 'T-Shirts & Vests',
+                        level: 2),
+                    Category(
+                        name: "Long Sleeve T-shirt",
+                        parentCategory: 'T-Shirts & Vests',
+                        level: 2),
+                    Category(
+                        name: "Vests",
+                        parentCategory: 'T-Shirts & Vests',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Cardigans & Sweaters",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Sweaters",
+                        parentCategory: 'Cardigans & Sweaters',
+                        level: 2),
+                    Category(
+                        name: "Cardigans",
+                        parentCategory: 'Cardigans & Sweaters',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Pants & Chinos",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Pants",
+                        parentCategory: 'Pants & Chinos',
+                        level: 2),
+                    Category(
+                        name: "Sweatpants",
+                        parentCategory: 'Pants & Chinos',
+                        level: 2),
+                    Category(
+                        name: "Chinos Pants",
+                        parentCategory: 'Pants & Chinos',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Hoodies & Sweatshirts",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Sweatshirts",
+                        parentCategory: 'Hoodies & Sweatshirts',
+                        level: 2),
+                    Category(
+                        name: "Hoodies",
+                        parentCategory: 'Hoodies & Sweatshirts',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Nightwear",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Sets", parentCategory: 'Nightwear', level: 2),
+                    Category(
+                        name: "Bottoms", parentCategory: 'Nightwear', level: 2),
+                    Category(
+                        name: "Tops", parentCategory: 'Nightwear', level: 2),
+                  ]),
+              Category(
+                  name: "Sportswear",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "T-Shirts & Vests",
+                        parentCategory: 'Sportswear',
+                        level: 2),
+                    Category(
+                        name: "Bottom", parentCategory: 'Sportswear', level: 2),
+                    Category(
+                        name: "Polo", parentCategory: 'Sportswear', level: 2),
+                    Category(
+                        name: "Sports Bras",
+                        parentCategory: 'Sportswear',
+                        level: 2),
+                    Category(
+                        name: "Jackets",
+                        parentCategory: 'Sportswear',
+                        level: 2),
+                    Category(
+                        name: "Shorts", parentCategory: 'Sportswear', level: 2),
+                    Category(
+                        name: "Sets", parentCategory: 'Sportswear', level: 2),
+                  ]),
+              Category(
+                  name: "Jackets & Coats",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Jackets",
+                        parentCategory: 'Jackets & Coats',
+                        level: 2),
+                    Category(
+                        name: "Coats",
+                        parentCategory: 'Jackets & Coats',
+                        level: 2),
+                    Category(
+                        name: "Blazers",
+                        parentCategory: 'Jackets & Coats',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Jeans",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Straight Jeans",
+                        parentCategory: 'Jeans',
+                        level: 2),
+                    Category(
+                        name: "Slim Jeans", parentCategory: 'Jeans', level: 2),
+                    Category(
+                        name: "Relaxed Jeans",
+                        parentCategory: 'Jeans',
+                        level: 2),
+                    Category(
+                        name: "Skinny Jeans",
+                        parentCategory: 'Jeans',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Polo Shirts",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Sports Polos",
+                        parentCategory: 'Shorts',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Shorts",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Sports Shorts",
+                        parentCategory: 'Shorts',
+                        level: 2),
+                    Category(
+                        name: "Shorts", parentCategory: 'Shorts', level: 2),
+                    Category(
+                        name: "Lounge Shorts",
+                        parentCategory: 'Shorts',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Multi packs",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Pants & Chinos",
+                        parentCategory: 'Multi packs',
+                        level: 2),
+                    Category(
+                        name: "Underwear & Socks",
+                        parentCategory: 'Multi packs',
+                        level: 2),
+                    Category(
+                        name: "Shorts",
+                        parentCategory: 'Multi packs',
+                        level: 2),
+                    Category(
+                        name: "T-shirts & Vests",
+                        parentCategory: 'Multi packs',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Indian Clothing",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Kurtis",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Bottoms",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Jackets",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Plus Size Clothing",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Shirts",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "T-shirts & Vests",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Jackets & Coats",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Hoodies & Sweatshirts",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Shorts",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Swimwear",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Classic Shorts",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Indian Clothing",
+                  parentCategory: 'Clothing',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Kurtis",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Bottoms",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                    Category(
+                        name: "Jackets",
+                        parentCategory: 'Indian Clothing',
+                        level: 2),
+                  ]),
+            ],
+          ),
+        ],
+      ),
+      Category(
+          name: 'Accessories',
+          parentCategory: 'kids',
+          level: 0,
+          subCategories: [
+            Category(
+              name: 'Girls',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Homeware",
+                    parentCategory: 'Accessories',
+                    level: 1,
+                    subCategories: [
+                      Category(
+                          name: "Kitchenware",
+                          parentCategory: 'Homeware',
+                          level: 2),
+                      Category(
+                          name: "Decorative Accessories",
+                          parentCategory: 'Homeware',
+                          level: 2),
+                      Category(
+                          name: "Soft Furnishings",
+                          parentCategory: 'Homeware',
+                          level: 2),
+                      Category(
+                          name: "Candles & Scents",
+                          parentCategory: 'Homeware',
+                          level: 2),
+                      Category(
+                          name: "Clocks", parentCategory: 'Homeware', level: 2),
+                      Category(
+                          name: "Books", parentCategory: 'Homeware', level: 2),
+                    ]),
+                Category(
+                    name: "Jewelery",
+                    parentCategory: 'Accessories',
+                    level: 1,
+                    subCategories: [
+                      Category(
+                          name: "Earnings",
+                          parentCategory: 'Jewelery',
+                          level: 2),
+                      Category(
+                          name: "Necklaces",
+                          parentCategory: 'Jewelery',
+                          level: 2),
+                      Category(
+                          name: "Bracelets",
+                          parentCategory: 'Jewelery',
+                          level: 2),
+                      Category(
+                          name: "Rings", parentCategory: 'Jewelery', level: 2),
+                      Category(
+                          name: "Sets", parentCategory: 'Jewelery', level: 2),
+                      Category(
+                          name: "Keyrings",
+                          parentCategory: 'Jewelery',
+                          level: 2),
+                    ]),
+                Category(
+                    name: "Headwear",
+                    parentCategory: 'Accessories',
+                    level: 1,
+                    subCategories: [
+                      Category(
+                          name: "Headbands",
+                          parentCategory: 'Headwear',
+                          level: 2),
+                      Category(
+                          name: "Hats", parentCategory: 'Headwear', level: 2),
+                      Category(
+                          name: "Face Masks",
+                          parentCategory: 'Headwear',
+                          level: 2),
+                    ]),
+                Category(
+                    name: "Sunglasses",
+                    parentCategory: 'Accessories',
+                    level: 1),
+                Category(
+                    name: "Watches",
+                    parentCategory: 'Accessories',
+                    level: 1,
+                    subCategories: [
+                      Category(
+                          name: "Analog Watches",
+                          parentCategory: 'Watches',
+                          level: 2),
+                      Category(
+                          name: "Digital Watches",
+                          parentCategory: 'Watches',
+                          level: 2),
+                      Category(
+                          name: "Smart Watches",
+                          parentCategory: 'Watches',
+                          level: 2),
+                      Category(
+                          name: "Sports Lifestyle Watches",
+                          parentCategory: 'Watches',
+                          level: 2),
+                    ]),
+                Category(
+                    name: "Scarves", parentCategory: 'Accessories', level: 1),
+                Category(
+                    name: "Gloves", parentCategory: 'Accessories', level: 1),
+                Category(
+                    name: "Belts", parentCategory: 'Accessories', level: 1),
+                Category(
+                    name: "Travel Accessories",
+                    parentCategory: 'Accessories',
+                    level: 1,
+                    subCategories: [
+                      Category(
+                          name: "Flight Accessories",
+                          parentCategory: 'Travel Accessories',
+                          level: 2),
+                      Category(
+                          name: "Luggage Tags & Passport Holders",
+                          parentCategory: 'Travel Accessories',
+                          level: 2),
+                      Category(
+                          name: "Umbrellas",
+                          parentCategory: 'Travel Accessories',
+                          level: 2),
+                    ]),
+                Category(
+                    name: "Multipacks",
+                    parentCategory: 'Accessories',
+                    level: 1),
+                Category(
+                    name: "Sports Accessories",
+                    parentCategory: 'Accessories',
+                    level: 1),
+              ],
+            ),
+            Category(
+              name: 'Boys',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Homeware",
+                    parentCategory: 'Accessories',
+                    level: 1,
+                    subCategories: [
+                      Category(
+                          name: "Kitchenware",
+                          parentCategory: 'Homeware',
+                          level: 2),
+                      Category(
+                          name: "Decorative Accessories",
+                          parentCategory: 'Homeware',
+                          level: 2),
+                      Category(
+                          name: "Soft Furnishings",
+                          parentCategory: 'Homeware',
+                          level: 2),
+                      Category(
+                          name: "Candles & Scents",
+                          parentCategory: 'Homeware',
+                          level: 2),
+                      Category(
+                          name: "Clocks", parentCategory: 'Homeware', level: 2),
+                      Category(
+                          name: "Books", parentCategory: 'Homeware', level: 2),
+                    ]),
+                Category(
+                    name: "Jewelery",
+                    parentCategory: 'Accessories',
+                    level: 1,
+                    subCategories: [
+                      Category(
+                          name: "Earnings",
+                          parentCategory: 'Jewelery',
+                          level: 2),
+                      Category(
+                          name: "Necklaces",
+                          parentCategory: 'Jewelery',
+                          level: 2),
+                      Category(
+                          name: "Bracelets",
+                          parentCategory: 'Jewelery',
+                          level: 2),
+                      Category(
+                          name: "Rings", parentCategory: 'Jewelery', level: 2),
+                      Category(
+                          name: "Sets", parentCategory: 'Jewelery', level: 2),
+                      Category(
+                          name: "Keyrings",
+                          parentCategory: 'Jewelery',
+                          level: 2),
+                    ]),
+                Category(
+                    name: "Headwear",
+                    parentCategory: 'Accessories',
+                    level: 1,
+                    subCategories: [
+                      Category(
+                          name: "Headbands",
+                          parentCategory: 'Headwear',
+                          level: 2),
+                      Category(
+                          name: "Hats", parentCategory: 'Headwear', level: 2),
+                      Category(
+                          name: "Face Masks",
+                          parentCategory: 'Headwear',
+                          level: 2),
+                    ]),
+                Category(
+                    name: "Sunglasses",
+                    parentCategory: 'Accessories',
+                    level: 1),
+                Category(
+                    name: "Watches",
+                    parentCategory: 'Accessories',
+                    level: 1,
+                    subCategories: [
+                      Category(
+                          name: "Analog Watches",
+                          parentCategory: 'Watches',
+                          level: 2),
+                      Category(
+                          name: "Digital Watches",
+                          parentCategory: 'Watches',
+                          level: 2),
+                      Category(
+                          name: "Smart Watches",
+                          parentCategory: 'Watches',
+                          level: 2),
+                      Category(
+                          name: "Sports Lifestyle Watches",
+                          parentCategory: 'Watches',
+                          level: 2),
+                    ]),
+                Category(
+                    name: "Scarves", parentCategory: 'Accessories', level: 1),
+                Category(
+                    name: "Gloves", parentCategory: 'Accessories', level: 1),
+                Category(
+                    name: "Belts", parentCategory: 'Accessories', level: 1),
+                Category(
+                    name: "Travel Accessories",
+                    parentCategory: 'Accessories',
+                    level: 1,
+                    subCategories: [
+                      Category(
+                          name: "Flight Accessories",
+                          parentCategory: 'Travel Accessories',
+                          level: 2),
+                      Category(
+                          name: "Luggage Tags & Passport Holders",
+                          parentCategory: 'Travel Accessories',
+                          level: 2),
+                      Category(
+                          name: "Umbrellas",
+                          parentCategory: 'Travel Accessories',
+                          level: 2),
+                    ]),
+                Category(
+                    name: "Multipacks",
+                    parentCategory: 'Accessories',
+                    level: 1),
+                Category(
+                    name: "Sports Accessories",
+                    parentCategory: 'Accessories',
+                    level: 1),
+              ],
+            ),
+          ]),
+      Category(
+          name: 'Home & LifeStyle',
+          parentCategory: 'kids',
+          level: 0,
+          subCategories: [
+            Category(name: 'Girls', subCategories: [
+              Category(
+                  name: "Home",
+                  parentCategory: 'Home & LifeStyle',
+                  level: 1,
+                  subCategories: [
+                    Category(name: "Living", parentCategory: 'Home', level: 2),
+                    Category(name: "Kitchen", parentCategory: 'Home', level: 2),
+                    Category(
+                        name: "Party Supplies",
+                        parentCategory: 'Home',
+                        level: 2),
+                    Category(name: "Bedroom", parentCategory: 'Home', level: 2),
+                    Category(
+                        name: "Games & Puzzles",
+                        parentCategory: 'Home',
+                        level: 2),
+                    Category(
+                        name: "Bathroom", parentCategory: 'Home', level: 2),
+                    Category(
+                        name: "Home Fragrance",
+                        parentCategory: 'Home',
+                        level: 2),
+                    Category(name: "Outdoor", parentCategory: 'Home', level: 2),
+                  ]),
+              Category(
+                  name: "Kitchen & Dining",
+                  parentCategory: 'Home & LifeStyle',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Mugs",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Water Bottles & Travel Mugs",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Dinnerware & Serveware",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Storage & Accessories",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Cafetieres, Tea Pots & Tea Sets",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Cooking & Baking",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Glassware",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Stationary",
+                  parentCategory: 'Home & LifeStyle',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Notebook",
+                        parentCategory: 'Stationary',
+                        level: 2),
+                    Category(
+                        name: "Pens & Pencils",
+                        parentCategory: 'Stationary',
+                        level: 2),
+                    Category(
+                        name: "Desk Essentials",
+                        parentCategory: 'Stationary',
+                        level: 2),
+                    Category(
+                        name: "Pencil Cases",
+                        parentCategory: 'Stationary',
+                        level: 2),
+                    Category(
+                        name: "Stationery Sets",
+                        parentCategory: 'Stationary',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Technology",
+                  parentCategory: 'Home & LifeStyle',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Tech Accessories",
+                        parentCategory: 'Technology',
+                        level: 2),
+                    Category(
+                        name: "Photography",
+                        parentCategory: 'Technology',
+                        level: 2),
+                    Category(
+                        name: "Audio", parentCategory: 'Technology', level: 2),
+                    Category(
+                        name: "Games", parentCategory: 'Technology', level: 2),
+                  ]),
+              Category(
+                  name: "Candles & Home Fragrance",
+                  parentCategory: 'Home & LifeStyle',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Candles",
+                        parentCategory: 'Candles & Home Fragrance',
+                        level: 2),
+                    Category(
+                        name: "Diffusers & Room Sprays",
+                        parentCategory: 'Candles & Home Fragrance',
+                        level: 2),
+                    Category(
+                        name: "Incense & Holders",
+                        parentCategory: 'Candles & Home Fragrance',
+                        level: 2),
+                    Category(
+                        name: "Candle Holders & Accessories",
+                        parentCategory: 'Candles & Home Fragrance',
+                        level: 2),
+                  ]),
+            ]),
+            Category(name: 'Boys', subCategories: [
+              Category(
+                  name: "Home",
+                  parentCategory: 'Home & LifeStyle',
+                  level: 1,
+                  subCategories: [
+                    Category(name: "Living", parentCategory: 'Home', level: 2),
+                    Category(name: "Kitchen", parentCategory: 'Home', level: 2),
+                    Category(
+                        name: "Party Supplies",
+                        parentCategory: 'Home',
+                        level: 2),
+                    Category(name: "Bedroom", parentCategory: 'Home', level: 2),
+                    Category(
+                        name: "Games & Puzzles",
+                        parentCategory: 'Home',
+                        level: 2),
+                    Category(
+                        name: "Bathroom", parentCategory: 'Home', level: 2),
+                    Category(
+                        name: "Home Fragrance",
+                        parentCategory: 'Home',
+                        level: 2),
+                    Category(name: "Outdoor", parentCategory: 'Home', level: 2),
+                  ]),
+              Category(
+                  name: "Kitchen & Dining",
+                  parentCategory: 'Home & LifeStyle',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Mugs",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Water Bottles & Travel Mugs",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Dinnerware & Serveware",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Storage & Accessories",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Cafetieres, Tea Pots & Tea Sets",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Cooking & Baking",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                    Category(
+                        name: "Glassware",
+                        parentCategory: 'Kitchen & Dining',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Stationary",
+                  parentCategory: 'Home & LifeStyle',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Notebook",
+                        parentCategory: 'Stationary',
+                        level: 2),
+                    Category(
+                        name: "Pens & Pencils",
+                        parentCategory: 'Stationary',
+                        level: 2),
+                    Category(
+                        name: "Desk Essentials",
+                        parentCategory: 'Stationary',
+                        level: 2),
+                    Category(
+                        name: "Pencil Cases",
+                        parentCategory: 'Stationary',
+                        level: 2),
+                    Category(
+                        name: "Stationery Sets",
+                        parentCategory: 'Stationary',
+                        level: 2),
+                  ]),
+              Category(
+                  name: "Technology",
+                  parentCategory: 'Home & LifeStyle',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Tech Accessories",
+                        parentCategory: 'Technology',
+                        level: 2),
+                    Category(
+                        name: "Photography",
+                        parentCategory: 'Technology',
+                        level: 2),
+                    Category(
+                        name: "Audio", parentCategory: 'Technology', level: 2),
+                    Category(
+                        name: "Games", parentCategory: 'Technology', level: 2),
+                  ]),
+              Category(
+                  name: "Candles & Home Fragrance",
+                  parentCategory: 'Home & LifeStyle',
+                  level: 1,
+                  subCategories: [
+                    Category(
+                        name: "Candles",
+                        parentCategory: 'Candles & Home Fragrance',
+                        level: 2),
+                    Category(
+                        name: "Diffusers & Room Sprays",
+                        parentCategory: 'Candles & Home Fragrance',
+                        level: 2),
+                    Category(
+                        name: "Incense & Holders",
+                        parentCategory: 'Candles & Home Fragrance',
+                        level: 2),
+                    Category(
+                        name: "Candle Holders & Accessories",
+                        parentCategory: 'Candles & Home Fragrance',
+                        level: 2),
+                  ]),
+            ]),
+          ]),
+      Category(name: 'Shoes', parentCategory: 'kids', level: 0, subCategories: [
+        Category(name: 'Girls', subCategories: [
+          Category(
+              name: "Sneakers",
+              parentCategory: 'Shoes',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Low-top Sneakers",
+                    parentCategory: 'Sneakers',
+                    level: 2),
+                Category(
+                    name: "High-top Sneakers",
+                    parentCategory: 'Sneakers',
+                    level: 2),
+              ]),
+          Category(
+              name: "Sandals",
+              parentCategory: 'Shoes',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Casual Sandals",
+                    parentCategory: 'Sandals',
+                    level: 2),
+              ]),
+          Category(
+              name: "Sports Shoes",
+              parentCategory: 'Shoes',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Trainers", parentCategory: 'Sports Shoes', level: 2),
+                Category(
+                    name: "Basketball",
+                    parentCategory: 'Sports Shoes',
+                    level: 2),
+                Category(
+                    name: "Football Shoes",
+                    parentCategory: 'Sports Shoes',
+                    level: 2),
+              ]),
+          Category(
+              name: "Boots",
+              parentCategory: 'Shoes',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Casual Boots", parentCategory: 'Boots', level: 2),
+                Category(
+                    name: "Formal Boots", parentCategory: 'Boots', level: 2),
+              ]),
+        ]),
+        Category(name: 'Boys', subCategories: [
+          Category(
+              name: "Sneakers",
+              parentCategory: 'Shoes',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Low-top Sneakers",
+                    parentCategory: 'Sneakers',
+                    level: 2),
+                Category(
+                    name: "High-top Sneakers",
+                    parentCategory: 'Sneakers',
+                    level: 2),
+              ]),
+          Category(
+              name: "Sandals",
+              parentCategory: 'Shoes',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Casual Sandals",
+                    parentCategory: 'Sandals',
+                    level: 2),
+              ]),
+          Category(
+              name: "Sports Shoes",
+              parentCategory: 'Shoes',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Trainers", parentCategory: 'Sports Shoes', level: 2),
+                Category(
+                    name: "Basketball",
+                    parentCategory: 'Sports Shoes',
+                    level: 2),
+                Category(
+                    name: "Football Shoes",
+                    parentCategory: 'Sports Shoes',
+                    level: 2),
+              ]),
+          Category(
+              name: "Boots",
+              parentCategory: 'Shoes',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Casual Boots", parentCategory: 'Boots', level: 2),
+                Category(
+                    name: "Formal Boots", parentCategory: 'Boots', level: 2),
+              ]),
+        ]),
+      ]),
+      Category(name: 'Bags', parentCategory: 'kids', level: 0, subCategories: [
+        Category(name: 'Girls', subCategories: [
+          Category(
+            name: "Wash Bags",
+            parentCategory: 'Bags',
+            level: 1,
+          ),
+          Category(
+            name: "Messenger Bags",
+            parentCategory: 'Bags',
+            level: 1,
+          ),
+          Category(
+              name: "Small Leather Goods",
+              parentCategory: 'Bags',
+              level: 1,
+              subCategories: [
+                Category(
+                  name: "Wallets",
+                  parentCategory: 'Small Leather Goods',
+                  level: 2,
+                ),
+                Category(
+                  name: "Card Holders",
+                  parentCategory: 'Small Leather Goods',
+                  level: 2,
+                ),
+              ]),
+          Category(
+              name: "Sports Bags",
+              parentCategory: 'Bags',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Backpacks", parentCategory: 'Sports Bags', level: 2),
+                Category(
+                    name: "Duffel Bags",
+                    parentCategory: 'Sports Bags',
+                    level: 2),
+              ]),
+          Category(name: "Cosmetic Bags", parentCategory: 'Bags', level: 1),
+        ]),
+        Category(name: 'Boys', subCategories: [
+          Category(
+            name: "Wash Bags",
+            parentCategory: 'Bags',
+            level: 1,
+          ),
+          Category(
+            name: "Messenger Bags",
+            parentCategory: 'Bags',
+            level: 1,
+          ),
+          Category(
+              name: "Small Leather Goods",
+              parentCategory: 'Bags',
+              level: 1,
+              subCategories: [
+                Category(
+                  name: "Wallets",
+                  parentCategory: 'Small Leather Goods',
+                  level: 2,
+                ),
+                Category(
+                  name: "Card Holders",
+                  parentCategory: 'Small Leather Goods',
+                  level: 2,
+                ),
+              ]),
+          Category(
+              name: "Sports Bags",
+              parentCategory: 'Bags',
+              level: 1,
+              subCategories: [
+                Category(
+                    name: "Backpacks", parentCategory: 'Sports Bags', level: 2),
+                Category(
+                    name: "Duffel Bags",
+                    parentCategory: 'Sports Bags',
+                    level: 2),
+              ]),
+          Category(name: "Cosmetic Bags", parentCategory: 'Bags', level: 1),
+        ]),
+      ]),
+    ]);
+    ProductAPI.addCategory(category: kids, categoryName: "kids");
+    super.initState();
+  }
 
   // @override
   // void initState() {
@@ -427,7 +1383,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Search by Brand',
-                    prefixIcon: Icon(Icons.search_sharp),
+                    prefixIcon: Icon(EvaIcons.searchOutline),
                     contentPadding: EdgeInsets.all(8),
                     focusedBorder: OutlineInputBorder(),
                   ),
@@ -497,7 +1453,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: Icon(
-              Icons.card_giftcard_sharp,
+              EvaIcons.giftOutline,
               color: Colors.red,
               size: 24,
             ),
@@ -507,7 +1463,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       backgroundColor: Colors.white,
       body: DefaultTabController(
-        length: 4,
+        length: 3,
         initialIndex: 0,
         child: Column(
           children: [
@@ -525,9 +1481,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 Tab(
                   text: 'Kids',
                 ),
-                Tab(
-                  text: 'Brands',
-                )
+                // Tab(
+                //   text: 'Brands',
+                // )
               ],
             ),
             Divider(
@@ -537,7 +1493,12 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: TabBarView(
                 physics: NeverScrollableScrollPhysics(),
-                children: [Women(), Men(), Kids(), Brands()],
+                children: [
+                  Women(),
+                  Men(),
+                  Kids(),
+                  // Brands(),
+                ],
               ),
             ),
           ],

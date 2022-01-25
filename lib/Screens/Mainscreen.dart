@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/AuthenticationAPI.dart';
+import 'package:thrifters_united/FirebaseAPI/FilterProvider.dart';
 import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/Screens/Cart.dart';
 import 'package:thrifters_united/Screens/Categories.dart';
@@ -30,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   List<dynamic> _ScreenOptions = <dynamic>[
     HomeScreen(),
-    Categories(),
+    // Categories(),
     Cart(),
     Wishlist(),
     Profile()
@@ -42,17 +44,15 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  // @override
-  // void initState() {
-  //   FirebaseAuth.instance.userChanges().listen((user) {
-  // setState before dispose
-  //     if (mounted) {
-  //       setState(() {});
-  //     }
-  //     // setState(() {});
-  //   });
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    FilterProvider.of(context, listen: false).setCategories();
+    FilterProvider.of(context, listen: false).setBrands();
+    FilterProvider.of(context, listen: false).setSizes();
+    FilterProvider.of(context, listen: false).setPriceRanges();
+    FilterProvider.of(context, listen: false).setProducts();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,20 +65,20 @@ class _MainScreenState extends State<MainScreen> {
         showUnselectedLabels: true,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(EvaIcons.homeOutline),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.category_outlined),
-            label: 'Categories',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.category_outlined),
+          //   label: 'Categories',
+          // ),
           BottomNavigationBarItem(
             icon: Consumer<AuthenticationAPI>(builder: (context, model, child) {
               return Badge(
                 elevation: 0,
                 badgeColor: Color(0xff51c0a9),
                 showBadge: model.user == null ? false : true,
-                child: Icon(Icons.shopping_cart_outlined),
+                child: Icon(EvaIcons.shoppingCartOutline),
                 badgeContent: model.user == null
                     ? Text(
                         '0',
@@ -118,7 +118,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person_outline_sharp,
+              EvaIcons.personOutline,
             ),
             label: 'Profile',
           ),

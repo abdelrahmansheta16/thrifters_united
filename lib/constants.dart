@@ -1,7 +1,33 @@
+import 'package:quiver/iterables.dart';
 import 'package:thrifters_classes/thrifters_classes.dart';
 
 List<Brand> brands = names.map((e) => Brand(name: e)).toList();
 List<Size> sizes = sizesNames.map((e) => Size(name: e)).toList();
+List<PriceRange> priceRanges = [
+  PriceRange(
+    min: 0,
+    max: 399,
+  ),
+  PriceRange(
+    min: 400,
+    max: 599,
+  ),
+  PriceRange(
+    min: 600,
+    max: 799,
+  ),
+  PriceRange(
+    min: 800,
+    max: 1199,
+  ),
+  PriceRange(
+    min: 1200,
+    max: 1999,
+  ),
+  PriceRange(
+    min: 2000,
+  ),
+];
 List<String> names = [
   'Academie',
   'adidas',

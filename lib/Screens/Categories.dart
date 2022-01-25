@@ -1,3 +1,4 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:thrifters_united/pages/Categories/Brands.dart';
@@ -40,7 +41,7 @@ class _CategoriesState extends State<Categories> {
           Padding(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: Icon(
-              Icons.search_sharp,
+              EvaIcons.searchOutline,
               color: Colors.black,
               size: 24,
             ),
@@ -48,7 +49,7 @@ class _CategoriesState extends State<Categories> {
           Padding(
             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: Icon(
-              Icons.card_giftcard_sharp,
+              EvaIcons.giftOutline,
               color: Colors.red,
               size: 24,
             ),
@@ -58,7 +59,7 @@ class _CategoriesState extends State<Categories> {
       ),
       backgroundColor: Colors.white,
       body: DefaultTabController(
-        length: 4,
+        length: 3,
         initialIndex: 0,
         child: Column(
           children: [
@@ -76,9 +77,6 @@ class _CategoriesState extends State<Categories> {
                 Tab(
                   text: 'Kids',
                 ),
-                Tab(
-                  text: 'Brands',
-                )
               ],
             ),
             Divider(
@@ -87,7 +85,7 @@ class _CategoriesState extends State<Categories> {
             ),
             Expanded(
               child: TabBarView(
-                children: [Women(), Men(), Kids(), Brands()],
+                children: [Women(), Men(), Kids()],
               ),
             ),
           ],
