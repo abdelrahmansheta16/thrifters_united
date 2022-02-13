@@ -42,15 +42,15 @@ class ProductAPI {
     await ProductsRef.add(product);
   }
 
-  static Future addProductToWishlist({Product product}) async {
-    product.inWishList = true;
-    await ProductsRef.doc(product.productId).set(product);
-  }
-
-  static Future removeProductToWishlist({Product product}) async {
-    product.inWishList = false;
-    await ProductsRef.doc(product.productId).set(product);
-  }
+  // static Future addProductToWishlist({Product product}) async {
+  //   product.inWishList = true;
+  //   await ProductsRef.doc(product.productId).set(product);
+  // }
+  //
+  // static Future removeProductToWishlist({Product product}) async {
+  //   product.inWishList = false;
+  //   await ProductsRef.doc(product.productId).set(product);
+  // }
 
   static Future addCategory(
       {@required Category category, String categoryName}) async {
@@ -60,8 +60,6 @@ class ProductAPI {
   static Stream<QuerySnapshot<Category>> loadCategories() {
     return CategoryRef.snapshots();
   }
-
-
 
   // static Category searchCategory(
   //     Category category, Product product, List<String> names) {

@@ -77,7 +77,7 @@ class UserAPI {
           toFirestore: (product, _) => product.toJson(),
         );
     await UsersRef.doc(product.productId).set(product);
-    await ProductAPI.addProductToWishlist(product: product);
+    // await ProductAPI.addProductToWishlist(product: product);
   }
 
   static Future removeProductFromCart({Product product}) async {
@@ -100,7 +100,7 @@ class UserAPI {
           toFirestore: (product, _) => product.toJson(),
         );
     UsersRef.doc(product.productId).delete();
-    await ProductAPI.removeProductToWishlist(product: product);
+    // await ProductAPI.removeProductToWishlist(product: product);
   }
 
   static Future clearCart() async {
@@ -132,21 +132,21 @@ class UserAPI {
     return cart;
   }
 
-  static double subtotal(List<dynamic> products) {
-    double currentPrice = 0;
-    products.forEach((product) {
-      currentPrice += product.price;
-    });
-    return currentPrice;
-  }
-
-  static double tax(List<dynamic> products) {
-    double currentPrice = 0;
-    products.forEach((product) {
-      currentPrice += product.price;
-    });
-    return currentPrice * 0.14;
-  }
+  // static double subtotal(List<dynamic> products) {
+  //   double currentPrice = 0;
+  //   products.forEach((product) {
+  //     currentPrice += product.afterPrice;
+  //   });
+  //   return currentPrice;
+  // }
+  //
+  // static double tax(List<dynamic> products) {
+  //   double currentPrice = 0;
+  //   products.forEach((product) {
+  //     currentPrice += product.afterPrice;
+  //   });
+  //   return currentPrice * 0.14;
+  // }
 
   static Stream<QuerySnapshot<Address>> loadAddresses(String userID) {
     final UsersRef = FirebaseFirestore.instance

@@ -1,23 +1,38 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.thrifters_united">
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+    </queries>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
 
     <application
+        android:usesCleartextTraffic="true"
         android:label="Thrifters"
         android:icon="@mipmap/launcher_icon">
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="high_importance_channel" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/splash" />
        <meta-data android:name="com.google.android.geo.API_KEY"
            android:value="AIzaSyB--Qums_5yz-SAwyR40zP71r5a9I3FoRc"/>
 
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -65,6 +80,10 @@
                <category android:name="android.intent.category.DEFAULT" />
                <category android:name="android.intent.category.BROWSABLE" />
                <data android:scheme="@string/fb_login_protocol_scheme" />
+           </intent-filter>
+           <intent-filter>
+               <action android:name="FLUTTER_NOTIFICATION_USER"/>
+               <category android:name="android.intent.category.DEFAULT"/>
            </intent-filter>
        </activity>
    </application>

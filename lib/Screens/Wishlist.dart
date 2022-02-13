@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,7 +28,9 @@ class _WishlistState extends State<Wishlist> {
   Widget build(BuildContext context) {
     return Consumer<AuthenticationAPI>(builder: (context, model, child) {
       if (model.user == null) {
-        return SignInWidget();
+        return SignInWidget(
+          currentScreen: 'wishlist',
+        );
       }
       return StreamBuilder<QuerySnapshot>(
           stream: UserAPI.loadWishlist(model.user.uid),
@@ -134,9 +137,8 @@ class WishlistWidget extends StatelessWidget {
 }
 
 class SignInWidget extends StatelessWidget {
-  const SignInWidget({
-    Key key,
-  }) : super(key: key);
+  final String currentScreen;
+  const SignInWidget({Key key, this.currentScreen}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -147,14 +149,18 @@ class SignInWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
-            Icons.favorite_border_outlined,
+            currentScreen == 'wishlist'
+                ? Icons.favorite_border_outlined
+                : EvaIcons.shoppingBagOutline,
             color: Color(0xFFC9C9C9),
             size: 124,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'If you saved any items in your wishlist, you see them here after you login',
+              currentScreen == 'wishlist'
+                  ? 'If you saved any items in your wishlist, you see them here after you login'
+                  : 'You must login to add products to your cart',
               textAlign: TextAlign.center,
               style: FlutterFlowTheme.bodyText1.override(
                 fontFamily: 'Poppins',

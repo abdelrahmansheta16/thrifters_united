@@ -6,11 +6,13 @@ import 'package:provider/provider.dart';
 import 'package:thrifters_classes/thrifters_classes.dart';
 
 class FilterProvider extends ChangeNotifier {
+
   static FilterProvider of(BuildContext context, {bool listen = true}) =>
       Provider.of<FilterProvider>(context, listen: listen);
 
+  List<USER> _users = [];
+  List<USER> get users => _users;
   List<Product> _filteredProducts = [];
-
   List<Product> get filteredProducts => _filteredProducts;
   List<Product> _products = [];
   List<Product> get products => _products;
@@ -37,6 +39,12 @@ class FilterProvider extends ChangeNotifier {
   List<String> get newArrivals => _newArrivals;
   bool _discountsOnly;
 
+  static final UsersRef = FirebaseFirestore.instance
+      .collection('users')
+      .withConverter<USER>(
+        fromFirestore: (snapshot, _) => USER.fromJson(snapshot.data()),
+        toFirestore: (user, _) => user.toJson(),
+      );
   static final CategoryRef = FirebaseFirestore.instance
       .collection('categories')
       .withConverter<Category>(
@@ -64,6 +72,13 @@ class FilterProvider extends ChangeNotifier {
         fromFirestore: (snapshot, _) => PriceRange.fromJson(snapshot.data()),
         toFirestore: (range, _) => range.toJson(),
       );
+
+  Future<void> setUsers() async {
+    _users = await UsersRef.get().then((querySnapshot) {
+      return querySnapshot.docs.map((e) => e.data()).toList();
+    });
+    notifyListeners();
+  }
 
   Future<void> setProducts() async {
     _products = await ProductRef.get().then((querySnapshot) {
@@ -200,10 +215,10 @@ class FilterProvider extends ChangeNotifier {
       _filteredProducts = _filteredProducts
           .where((first) => _selectedPriceRanges.any((element) {
                 if (element.max != null) {
-                  return first.price >= element.min &&
-                      first.price <= element.max;
+                  return first.afterPrice >= element.min &&
+                      first.afterPrice <= element.max;
                 }
-                return first.price >= element.min;
+                return first.afterPrice >= element.min;
               }))
           .toList();
     }

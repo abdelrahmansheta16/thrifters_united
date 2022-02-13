@@ -109,7 +109,7 @@ class _HomeCategoriesState extends State<HomeCategories> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ProductDetailsWidget(product: product)),
+                                      ProductDetails(product: product)),
                             );
                           },
                           child: ProductContainer(

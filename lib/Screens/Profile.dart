@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:thrifters_united/pages/Profile/Balance.dart';
+import 'package:thrifters_united/pages/Profile/EarnCredit.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_widgets.dart';
 import 'package:thrifters_united/pages/Profile/MyAddresses/MyAdresses.dart';
@@ -271,24 +273,34 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           Divider(),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
-                                child: Icon(
-                                  Icons.attach_money_sharp,
-                                  color: Colors.black,
-                                  size: 24,
-                                ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    Balance(user: user == null ? null : user),
+                              ));
+                            },
+                            child: Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                                    child: Icon(
+                                      Icons.attach_money_sharp,
+                                      color: Colors.black,
+                                      size: 24,
+                                    ),
+                                  ),
+                                  Text(
+                                    'My Credit',
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  )
+                                ],
                               ),
-                              Text(
-                                'My Credit',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Poppins',
-                                ),
-                              )
-                            ],
+                            ),
                           ),
                           Divider(),
                           InkWell(
@@ -322,44 +334,55 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           Divider(),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
-                                child: Icon(
-                                  Icons.credit_card_sharp,
-                                  color: Colors.black,
-                                  size: 24,
+                          // Row(
+                          //   mainAxisSize: MainAxisSize.max,
+                          //   children: [
+                          //     Padding(
+                          //       padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                          //       child: Icon(
+                          //         Icons.credit_card_sharp,
+                          //         color: Colors.black,
+                          //         size: 24,
+                          //       ),
+                          //     ),
+                          //     Text(
+                          //       'My Cards',
+                          //       style: FlutterFlowTheme.bodyText1.override(
+                          //         fontFamily: 'Poppins',
+                          //       ),
+                          //     )
+                          //   ],
+                          // ),
+                          // Divider(),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => EarnCredit(),
                                 ),
+                              );
+                            },
+                            child: Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                                    child: Icon(
+                                      Icons.money_sharp,
+                                      color: Colors.black,
+                                      size: 24,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Earn Credit',
+                                    style: FlutterFlowTheme.bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  )
+                                ],
                               ),
-                              Text(
-                                'My Cards',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Poppins',
-                                ),
-                              )
-                            ],
-                          ),
-                          Divider(),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
-                                child: Icon(
-                                  Icons.money_sharp,
-                                  color: Colors.black,
-                                  size: 24,
-                                ),
-                              ),
-                              Text(
-                                'Earn Credit',
-                                style: FlutterFlowTheme.bodyText1.override(
-                                  fontFamily: 'Poppins',
-                                ),
-                              )
-                            ],
+                            ),
                           ),
                           Divider(),
                           Row(

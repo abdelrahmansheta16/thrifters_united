@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/AddressAPI.dart';
@@ -52,11 +53,11 @@ class _AddAddressState extends State<AddAddress> {
 
   @override
   Widget build(BuildContext context) {
-    final String userID = ModalRoute.of(context).settings.arguments.toString();
+    // final String userID = ModalRoute.of(context).settings.arguments.toString();
     GeoPoint geoPoint = Provider.of<AddressAPI>(context).geoPoint;
     print(geoPoint);
     var currentCode = '+20';
-    print(userID);
+    // print(userID);
     return Form(
       key: formKey,
       child: Scaffold(
@@ -111,10 +112,11 @@ class _AddAddressState extends State<AddAddress> {
                         right: 0,
                         child: Center(
                           child: FFButtonWidget(
-                            onPressed: () {
-                              Navigator.pushNamed(context,
+                            onPressed: () async {
+                              await Navigator.pushNamed(context,
                                   '/profile/MyAddresses/AddAddress/Maps',
-                                  arguments: userID);
+                                  arguments:
+                                      FirebaseAuth.instance.currentUser.uid);
                             },
                             text: 'Add Location',
                             options: FFButtonOptions(
@@ -612,7 +614,8 @@ class _AddAddressState extends State<AddAddress> {
                         );
                         if (address.location != null) {
                           print(address.location);
-                          await AddressAPI.addAddresses(address, userID);
+                          await AddressAPI.addAddresses(
+                              address, FirebaseAuth.instance.currentUser.uid);
                           Navigator.pop(context);
                         } else {
                           Fluttertoast.showToast(

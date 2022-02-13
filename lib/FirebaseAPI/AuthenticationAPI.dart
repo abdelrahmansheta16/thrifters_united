@@ -6,14 +6,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:nanoid/nanoid.dart';
 import 'dart:io' show Platform;
 
-import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:thrifters_united/main.dart';
 import 'package:thrifters_classes/thrifters_classes.dart';
 
 class AuthenticationAPI with ChangeNotifier {
   // var _googlesignin = GoogleSignIn();
+  final _fcm = FirebaseMessaging.instance;
   GoogleSignInAccount googleSignInAccount;
   final FirebaseAuth auth = FirebaseAuth.instance;
   User user;
@@ -45,20 +47,33 @@ class AuthenticationAPI with ChangeNotifier {
       });
 
       // Once signed in, return the UserCredential
-      user = await FirebaseAuth.instance
-          .signInWithPopup(facebookProvider)
-          .then((value) => value.user);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithPopup(facebookProvider);
+      user = userCredential.user;
+      if (userCredential.additionalUserInfo.isNewUser) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user.uid)
+            .set(
+          {
+            'rewards': nanoid(5),
+          },
+          SetOptions(merge: true),
+        );
+      }
       await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
         {
           'name': user.displayName,
           'email': user.email,
           'userID': user.uid,
+          'token': _fcm.getToken(),
         },
         SetOptions(merge: true),
       );
       await FirebaseMessaging.instance.subscribeToTopic('newsletters');
       notifyListeners();
     } else {
+      final token = await _fcm.getToken();
       final LoginResult loginResult = await FacebookAuth.instance.login();
 
       // Create a credential from the access token
@@ -66,23 +81,41 @@ class AuthenticationAPI with ChangeNotifier {
           FacebookAuthProvider.credential(loginResult.accessToken.token);
 
       // Once signed in, return the UserCredential
-      user = await FirebaseAuth.instance
-          .signInWithCredential(facebookAuthCredential)
-          .then((value) => value.user);
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
-        {
-          'name': user.displayName,
-          'email': user.email,
-          'userID': user.uid,
-        },
-        SetOptions(merge: true),
-      );
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
+      user = userCredential.user;
+      if (userCredential.additionalUserInfo.isNewUser) {
+        UsersRef.doc(user.uid).set(
+          USER(
+            name: user.displayName,
+            email: user.email,
+            userID: user.uid,
+            token: token,
+            rewards: nanoid(5),
+          ),
+          SetOptions(merge: true),
+        );
+      }
+      //     .then((value) {
+      //   if (userCredential.additionalUserInfo.isNewUser) {
+      //     FirebaseFirestore.instance
+      //         .collection('users')
+      //         .doc(userCredential.user.uid)
+      //         .set(
+      //       {
+      //         'rewards': nanoid(5),
+      //       },
+      //       SetOptions(merge: true),
+      //     );
+      //   }
+      // });
       await FirebaseMessaging.instance.subscribeToTopic('newsletters');
       notifyListeners();
     }
   }
 
   signInWithGoogle() async {
+    final token = await _fcm.getToken();
     if (kIsWeb) {
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
@@ -91,19 +124,29 @@ class AuthenticationAPI with ChangeNotifier {
       googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
 
       // Once signed in, return the UserCredential
-      await FirebaseAuth.instance.signInWithPopup(googleProvider).then((value) {
-        googleUser.userID = value.user.uid;
-        FirebaseFirestore.instance.collection('users').doc(user.uid).set(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      user = userCredential.user;
+      FirebaseFirestore.instance.collection('users').doc(user.uid).set(
+        {
+          'name': user.displayName,
+          'email': user.email,
+          'userID': user.uid,
+          'token': token,
+        },
+        SetOptions(merge: true),
+      );
+      if (userCredential.additionalUserInfo.isNewUser) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user.uid)
+            .set(
           {
-            'name': googleUser.name,
-            'email': googleUser.email,
-            'userID': googleUser.userID,
-            'phoneNumber': googleUser.phoneNumber,
-            'birthday': googleUser.birthday,
+            'rewards': nanoid(5),
           },
           SetOptions(merge: true),
         );
-      });
+      }
 
       await FirebaseMessaging.instance.subscribeToTopic('newsletters');
       notifyListeners();
@@ -121,21 +164,35 @@ class AuthenticationAPI with ChangeNotifier {
       );
 
       // Once signed in, return the UserCredential
-      await FirebaseAuth.instance
-          .signInWithCredential(credential)
-          .then((value) {
-        googleUser.userID = value.user.uid;
-        FirebaseFirestore.instance.collection('users').doc(user.uid).set(
-          {
-            'name': googleUser.name,
-            'email': googleUser.email,
-            'userID': googleUser.userID,
-            'phoneNumber': googleUser.phoneNumber,
-            'birthday': googleUser.birthday,
-          },
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      user = userCredential.user;
+      if (userCredential.additionalUserInfo.isNewUser) {
+        UsersRef.doc(user.uid).set(
+          USER(
+            name: user.displayName,
+            email: user.email,
+            userID: user.uid,
+            token: token,
+            rewards: nanoid(5),
+          ),
           SetOptions(merge: true),
         );
-      });
+      }
+
+      //     .then((value) {
+      //   if (userCredential.additionalUserInfo.isNewUser) {
+      //     FirebaseFirestore.instance
+      //         .collection('users')
+      //         .doc(userCredential.user.uid)
+      //         .set(
+      //       {
+      //         'rewards': nanoid(5),
+      //       },
+      //       SetOptions(merge: true),
+      //     );
+      //   }
+      // });
       await FirebaseMessaging.instance.subscribeToTopic('newsletters');
       notifyListeners();
     }
@@ -144,23 +201,33 @@ class AuthenticationAPI with ChangeNotifier {
   signInWithEmailAndPassword(String email, String password) async {
     user = await auth
         .signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        )
-        .then((value) => value.user);
-    await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
-      {
-        'name': user.displayName,
-        'email': user.email,
-        'userID': user.uid,
-      },
-      SetOptions(merge: true),
-    );
+      email: email,
+      password: password,
+    )
+        .then((value) {
+      if (value.additionalUserInfo.isNewUser) {
+        FirebaseFirestore.instance.collection('users').doc(value.user.uid).set(
+          {
+            'rewards': nanoid(5),
+          },
+          SetOptions(merge: true),
+        );
+      }
+      return value.user;
+    });
+    // await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
+    //   {
+    //     'name': user.displayName,
+    //     'email': user.email,
+    //     'userID': user.uid,
+    //   },
+    //   SetOptions(merge: true),
+    // );
     notifyListeners();
   }
 
-  bool checkUserloggedin(User user) {
-    user == null ? false : true;
+  bool checkUserLoggedIn(User user) {
+    return user != null;
   }
 
   Future getUser() async {
@@ -175,19 +242,31 @@ class AuthenticationAPI with ChangeNotifier {
   }
 
   registerWithEmailandPassword(String email, String password) async {
+    final token = _fcm.getToken();
     user = await auth
         .createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        )
-        .then((value) => value.user);
+      email: email,
+      password: password,
+    )
+        .then((value) {
+      if (value.additionalUserInfo.isNewUser) {
+        FirebaseFirestore.instance.collection('users').doc(value.user.uid).set(
+          {
+            'rewards': nanoid(5),
+          },
+          SetOptions(merge: true),
+        );
+      }
+      return value.user;
+    });
     await FirebaseMessaging.instance.subscribeToTopic('newsletters');
-    await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
-      {
-        'name': user.displayName,
-        'email': user.email,
-        'userID': user.uid,
-      },
+    UsersRef.doc(user.uid).set(
+      USER(
+        name: user.displayName,
+        email: user.email,
+        userID: user.uid,
+        rewards: nanoid(5),
+      ),
       SetOptions(merge: true),
     );
     notifyListeners();

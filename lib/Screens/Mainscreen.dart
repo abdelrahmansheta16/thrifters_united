@@ -4,12 +4,15 @@ import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/AuthenticationAPI.dart';
+import 'package:thrifters_united/FirebaseAPI/DioHelper.dart';
 import 'package:thrifters_united/FirebaseAPI/FilterProvider.dart';
 import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/Screens/Cart.dart';
+import 'package:thrifters_united/pages/CartPage.dart';
 import 'package:thrifters_united/Screens/Categories.dart';
 import 'package:thrifters_united/Screens/Homescreen.dart';
 import 'package:thrifters_united/Screens/Profile.dart';
@@ -44,13 +47,50 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    print('A new onMessageOpenedApp event was published!');
+    print(message.data);
+    print(message.data['message']);
+    if (message.data['message'] == 'orders') {
+      Navigator.pushNamed(
+        context,
+        '/profile/MyOrders',
+      );
+    }
+    // Navigator.pushNamed(
+    //   context,
+    //   Orders.id,
+    // );
+    // arguments: MessageArguments(message, true));
+  }
+
   @override
   void initState() {
+    DioHelper.getData();
+    FilterProvider.of(context, listen: false).setUsers();
     FilterProvider.of(context, listen: false).setCategories();
     FilterProvider.of(context, listen: false).setBrands();
     FilterProvider.of(context, listen: false).setSizes();
     FilterProvider.of(context, listen: false).setPriceRanges();
     FilterProvider.of(context, listen: false).setProducts();
+    setupInteractedMessage();
     super.initState();
   }
 
@@ -91,17 +131,6 @@ class _MainScreenState extends State<MainScreen> {
                         stream: UserAPI.loadCart(
                             FirebaseAuth.instance.currentUser.uid),
                         builder: (context, snapshot) {
-                          // if (snapshot.hasError) {
-                          // return SizedBox();
-                          // }
-                          //
-                          // if (snapshot.connectionState ==
-                          // ConnectionState.waiting) {
-                          // return Center(
-                          // child: CircularProgressIndicator(
-                          // color: Colors.white,
-                          // ));
-                          // }
                           int cartLength = snapshot.data?.docs?.length;
                           return Text(
                             cartLength.toString(),
