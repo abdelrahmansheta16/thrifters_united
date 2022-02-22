@@ -52,6 +52,28 @@ class _EarnCreditState extends State<EarnCredit> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.38,
             fit: BoxFit.fitHeight,
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace stackTrace) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.38,
+              );
+            },
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes
+                      : null,
+                  color: Colors.black,
+                ),
+              );
+            },
           ),
           Padding(
             padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
@@ -141,7 +163,7 @@ class _EarnCreditState extends State<EarnCredit> {
                             ),
                             onPressed: () {
                               Share.share(
-                                  'Enjoy 25% discount at Thrifters. Use coupon code ${snapshot.data.data().rewards} on your first purchase.');
+                                  'Enjoy 25% discount at Thrifters. Use coupon code ${snapshot.data.data().rewards} on your first purchase. Visit Thrifters now: \nhttps://thrifters.page.link/post');
                             },
                           ),
                         ],

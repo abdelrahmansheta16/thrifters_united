@@ -23,16 +23,19 @@ class _ProductsGridViewState extends State<ProductsGridView> {
         ),
         child: GridView.builder(
             addRepaintBoundaries: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 1,
               mainAxisSpacing: 1,
+              childAspectRatio: ((MediaQuery.of(context).size.width) /
+                      (MediaQuery.of(context).size.height)) +
+                  0.1,
             ),
             itemCount: model.filteredProducts.length.isEven
                 ? model.filteredProducts.length
                 : model.filteredProducts.length + 1,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
+            // physics: NeverScrollableScrollPhysics(),
+            // shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) {
               if (index >= model.filteredProducts.length) {
                 return Container(

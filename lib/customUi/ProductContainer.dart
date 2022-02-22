@@ -62,14 +62,36 @@ class _ProductContainerState extends State<ProductContainer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 200,
-                  height: 200,
+                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.of(context).size.width / 2,
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
                       Image.network(
-                        widget.product.images[0],
-                        fit: BoxFit.fitWidth,
+                        widget.product.images.first,
+                        fit: BoxFit.fill,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace stackTrace) {
+                          return Container(
+                            width: 200,
+                            height: 200,
+                          );
+                        },
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes
+                                  : null,
+                              color: Colors.black12,
+                            ),
+                          );
+                        },
                       ),
                       model.user != null
                           ? Align(

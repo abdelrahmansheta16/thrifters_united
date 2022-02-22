@@ -12,8 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Balance extends StatefulWidget {
-  final User user;
-  const Balance({Key key, this.user}) : super(key: key);
+  const Balance({Key key}) : super(key: key);
 
   @override
   _BalanceState createState() => _BalanceState();
@@ -46,7 +45,7 @@ class _BalanceState extends State<Balance> {
       ),
       backgroundColor: Colors.white,
       body: FutureBuilder<DocumentSnapshot<USER>>(
-          future: UserAPI.getUser(widget.user.uid),
+          future: UserAPI.getUser(FirebaseAuth.instance.currentUser.uid),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text('Something went wrong');

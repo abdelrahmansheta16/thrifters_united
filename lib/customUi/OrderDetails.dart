@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_classes/thrifters_classes.dart';
 
@@ -68,7 +69,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                             ),
                           ),
                           Text(
-                            'Ordered on: ${widget.order.orderedOn}',
+                            'Ordered on: ${DateFormat.yMMMMd('en_US').format(widget.order.orderedOn)}',
                             textAlign: TextAlign.center,
                             style: FlutterFlowTheme.bodyText1.override(
                               fontFamily: 'Poppins',
@@ -189,7 +190,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 ),
                               ),
                               Text(
-                                widget.order.orderedOn.toString(),
+                                DateFormat.yMMMMd('en_US')
+                                    .format(widget.order.orderedOn),
                                 style: FlutterFlowTheme.bodyText1.override(
                                   fontFamily: 'Poppins',
                                   color: Colors.black,
@@ -541,6 +543,27 @@ class OrderProducts extends StatelessWidget {
             product.images[0],
             width: MediaQuery.of(context).size.width * 0.2,
             fit: BoxFit.cover,
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace stackTrace) {
+              return Container(
+                width: MediaQuery.of(context).size.width * 0.2,
+              );
+            },
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes
+                      : null,
+                  color: Colors.black12,
+                ),
+              );
+            },
           ),
           Padding(
             padding:

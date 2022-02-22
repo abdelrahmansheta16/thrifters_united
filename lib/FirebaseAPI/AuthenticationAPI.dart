@@ -201,20 +201,10 @@ class AuthenticationAPI with ChangeNotifier {
   signInWithEmailAndPassword(String email, String password) async {
     user = await auth
         .signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    )
-        .then((value) {
-      if (value.additionalUserInfo.isNewUser) {
-        FirebaseFirestore.instance.collection('users').doc(value.user.uid).set(
-          {
-            'rewards': nanoid(5),
-          },
-          SetOptions(merge: true),
-        );
-      }
-      return value.user;
-    });
+          email: email,
+          password: password,
+        )
+        .then((value) => value.user);
     // await FirebaseFirestore.instance.collection('users').doc(user.uid).set(
     //   {
     //     'name': user.displayName,
@@ -241,34 +231,26 @@ class AuthenticationAPI with ChangeNotifier {
     notifyListeners();
   }
 
-  registerWithEmailandPassword(String email, String password) async {
-    final token = _fcm.getToken();
-    user = await auth
-        .createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    )
-        .then((value) {
-      if (value.additionalUserInfo.isNewUser) {
-        FirebaseFirestore.instance.collection('users').doc(value.user.uid).set(
-          {
-            'rewards': nanoid(5),
-          },
-          SetOptions(merge: true),
-        );
-      }
-      return value.user;
-    });
+  registerWithEmailandPassword(String email, String password, String firstName,
+      String lastName, String gender) async {
+    String token = await _fcm.getToken();
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+    user = userCredential.user;
+    if (userCredential.additionalUserInfo.isNewUser) {
+      UsersRef.doc(user.uid).set(
+        USER(
+          name: '${firstName} ${lastName}',
+          email: user.email,
+          gender: gender,
+          userID: user.uid,
+          token: token,
+          rewards: nanoid(5),
+        ),
+        SetOptions(merge: true),
+      );
+    }
     await FirebaseMessaging.instance.subscribeToTopic('newsletters');
-    UsersRef.doc(user.uid).set(
-      USER(
-        name: user.displayName,
-        email: user.email,
-        userID: user.uid,
-        rewards: nanoid(5),
-      ),
-      SetOptions(merge: true),
-    );
     notifyListeners();
   }
 }

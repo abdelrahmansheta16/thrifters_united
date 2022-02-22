@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:googleapis/content/v2_1.dart' as v2;
 import 'package:googleapis_auth/googleapis_auth.dart' as auth show AuthClient;
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/cloudsearch/v1.dart';
 import 'package:googleapis/people/v1.dart' as gas;
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/AuthenticationAPI.dart';
 import 'package:thrifters_united/FirebaseAPI/FilterProvider.dart';
@@ -18,6 +24,8 @@ import 'package:thrifters_united/FirebaseAPI/LocationProvider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
 import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/Screens/Authentication.dart';
+import 'package:thrifters_united/customUi/dialogBuilder.dart';
+import 'package:thrifters_united/l10n/l10n.dart';
 import 'package:thrifters_united/pages/CartPage.dart';
 import 'package:thrifters_united/Screens/Categories.dart';
 import 'package:thrifters_united/Screens/Homescreen.dart';
@@ -31,7 +39,9 @@ import 'package:thrifters_united/pages/Profile/MyOrders.dart';
 import 'package:thrifters_united/pages/Profile/MyProfile.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:thrifters_classes/utils.dart';
+import 'package:thrifters_united/pages/Profile/MyReturns.dart';
 import 'package:thrifters_united/pages/Shopping/ChooseAddress.dart';
 
 import 'FirebaseAPI/AddressAPI.dart';
@@ -50,7 +60,7 @@ final GoogleSignIn googleSignIn = GoogleSignIn(
     gas.PeopleServiceApi.userinfoProfileScope,
   ],
 );
-
+String currentLanguage;
 String initialRoute;
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -68,7 +78,7 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
@@ -127,10 +137,36 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   GoogleSignInAccount _currentUser;
   String _contactText = '';
+  InternetConnectionStatus _connectionStatus;
+  final InternetConnectionChecker _connectivity = InternetConnectionChecker();
+  StreamSubscription<InternetConnectionStatus> _connectivitySubscription;
+
+  bool allowClose = false;
+  DateTime get timeBackPressed => DateTime.now();
+
+  // Widget _buildPopupDialog(BuildContext context) {
+  //   return new CupertinoAlertDialog(
+  //       title: const Text('Connect to the Internet'),
+  //       actions: [
+  //         TextButton(
+  //             onPressed: () async {
+  //               Navigator.pop(context);
+  //               await initConnectivity();
+  //             },
+  //             child: Text('Retry')),
+  //         TextButton(
+  //             onPressed: ({bool animated}) async {
+  //               await SystemChannels.platform
+  //                   .invokeMethod<void>('SystemNavigator.pop', animated);
+  //             },
+  //             child: Text('Exit')),
+  //       ]);
+  // }
 
   @override
-  Future<void> initState() {
+  void initState() {
     super.initState();
+    // FirebaseCrashlytics.instance.crash();
     FirebaseAuth.instance.authStateChanges().listen((event) {
       Provider.of<AuthenticationAPI>(context, listen: false).setUser(event);
     });
@@ -142,7 +178,6 @@ class _MyAppState extends State<MyApp> {
         _handleGetContact();
       }
     });
-
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     messaging
         .requestPermission(
@@ -205,6 +240,53 @@ class _MyAppState extends State<MyApp> {
     // _connectivitySubscription =
     //     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     // _googleSignIn.signIn().then((value) => print(value.displayName));
+    // _connectivitySubscription =
+    //     _connectivity.onStatusChange.listen(_updateConnectionStatus);
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription.cancel();
+    super.dispose();
+  }
+
+  Future<void> initConnectivity() async {
+    InternetConnectionStatus result = InternetConnectionStatus.disconnected;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.connectionStatus;
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(InternetConnectionStatus result) async {
+    print('state: ${result}');
+
+    switch (result) {
+      case InternetConnectionStatus.connected:
+        break;
+      case InternetConnectionStatus.disconnected:
+        setState(() {
+          _connectionStatus = result;
+        });
+        await Fluttertoast.showToast(msg: 'msg');
+
+        break;
+      default:
+        setState(
+            () => _connectionStatus = InternetConnectionStatus.disconnected);
+        break;
+    }
   }
 
   Future<void> _handleGetContact() async {
@@ -245,9 +327,9 @@ class _MyAppState extends State<MyApp> {
         gender: person.genders.first.value,
         phoneNumber: person.phoneNumbers?.first?.formattedType,
         email: person.emailAddresses.first.value,
-        addresses: person.addresses?.map((address) {
-          return address.formattedType;
-        })?.toList(),
+        // addresses: person.addresses?.map((address) {
+        //   return address.formattedType;
+        // })?.toList(),
         birthday: Utils.fromDateTimeToJson(DateTime(
             person.birthdays.first.date.year,
             person.birthdays.first.date.month,
@@ -313,83 +395,17 @@ class _MyAppState extends State<MyApp> {
     ]);
     return MaterialApp(
       supportedLocales: [
-        Locale("af"),
-        Locale("am"),
-        Locale("ar"),
-        Locale("az"),
-        Locale("be"),
-        Locale("bg"),
-        Locale("bn"),
-        Locale("bs"),
-        Locale("ca"),
-        Locale("cs"),
-        Locale("da"),
-        Locale("de"),
-        Locale("el"),
-        Locale("en"),
-        Locale("es"),
-        Locale("et"),
-        Locale("fa"),
-        Locale("fi"),
-        Locale("fr"),
-        Locale("gl"),
-        Locale("ha"),
-        Locale("he"),
-        Locale("hi"),
-        Locale("hr"),
-        Locale("hu"),
-        Locale("hy"),
-        Locale("id"),
-        Locale("is"),
-        Locale("it"),
-        Locale("ja"),
-        Locale("ka"),
-        Locale("kk"),
-        Locale("km"),
-        Locale("ko"),
-        Locale("ku"),
-        Locale("ky"),
-        Locale("lt"),
-        Locale("lv"),
-        Locale("mk"),
-        Locale("ml"),
-        Locale("mn"),
-        Locale("ms"),
-        Locale("nb"),
-        Locale("nl"),
-        Locale("nn"),
-        Locale("no"),
-        Locale("pl"),
-        Locale("ps"),
-        Locale("pt"),
-        Locale("ro"),
-        Locale("ru"),
-        Locale("sd"),
-        Locale("sk"),
-        Locale("sl"),
-        Locale("so"),
-        Locale("sq"),
-        Locale("sr"),
-        Locale("sv"),
-        Locale("ta"),
-        Locale("tg"),
-        Locale("th"),
-        Locale("tk"),
-        Locale("tr"),
-        Locale("tt"),
-        Locale("uk"),
-        Locale("ug"),
-        Locale("ur"),
-        Locale("uz"),
-        Locale("vi"),
-        Locale("zh")
+        const Locale('en'),
+        const Locale('ar'),
       ],
       localizationsDelegates: [
-        CountryLocalizations.delegate,
+        // AppLocalizations.delegate,
+        // CountryLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      // locale: const Locale('ar'),
       theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(
@@ -414,6 +430,7 @@ class _MyAppState extends State<MyApp> {
         '/profile/MyAddresses': (context) => MyAddresses(),
         '/profile/MyAddresses/AddAddress': (context) => AddAddress(),
         '/profile/MyOrders': (context) => MyOrders(),
+        '/profile/MyReturns': (context) => MyReturn(),
         '/profile/MyAddresses/AddAddress/Maps': (context) => MapScreen(),
       },
     );

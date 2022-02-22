@@ -1,4 +1,5 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -9,6 +10,7 @@ import 'package:thrifters_united/customUi/FilteredProducts.dart';
 import 'package:thrifters_united/pages/Home/Kids.dart';
 import 'package:thrifters_united/pages/Home/Men.dart';
 import 'package:thrifters_united/pages/Home/Women.dart';
+import 'package:thrifters_united/pages/Home/notifications.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -19,6 +21,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    FirebaseAnalytics.instance.setCurrentScreen(screenName: 'HomeScreen');
+    super.initState();
+  }
   //
   // @override
   // void initState() {
@@ -1450,12 +1457,19 @@ class _HomeScreenState extends State<HomeScreen> {
           //     ),
           //   ),
           // ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: Icon(
-              EvaIcons.giftOutline,
-              color: Colors.red,
-              size: 24,
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => Notifications()),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(
+                EvaIcons.bellOutline,
+                color: Colors.black,
+                size: 24,
+              ),
             ),
           )
         ],

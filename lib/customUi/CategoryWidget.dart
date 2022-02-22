@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:thrifters_united/main.dart';
 
 class CategoryWidget extends StatefulWidget {
   final String imageUrl;
- final String label;
+  final String label;
 
   CategoryWidget({Key key, this.imageUrl, this.label}) : super(key: key);
 
@@ -28,6 +29,28 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             ),
             child: Image.network(
               widget.imageUrl,
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace stackTrace) {
+                return Container(
+                  width: 60,
+                  height: 60,
+                );
+              },
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes
+                        : null,
+                    color: Colors.black12,
+                  ),
+                );
+              },
             ),
           ),
         ),
@@ -38,7 +61,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
               color: Colors.black,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold),
-        )
+        ),
       ],
     );
   }

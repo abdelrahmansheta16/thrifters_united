@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,23 +9,24 @@ import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
 import 'package:thrifters_united/Screens/Homescreen.dart';
 import 'package:thrifters_united/Screens/Mainscreen.dart';
 import 'package:thrifters_united/customUi/CartProductContainer.dart';
+import 'package:thrifters_united/customUi/OrderDetails.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_widgets.dart';
 import 'package:thrifters_classes/thrifters_classes.dart';
 
-import '../FirebaseAPI/AuthenticationAPI.dart';
-import '../customUi/ProductDetails.dart';
+import '../../FirebaseAPI/AuthenticationAPI.dart';
+import '../../customUi/ProductDetails.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-class Wishlist extends StatefulWidget {
-  const Wishlist({Key key}) : super(key: key);
+class MyReturn extends StatefulWidget {
+  const MyReturn({Key key}) : super(key: key);
 
   @override
-  _WishlistState createState() => _WishlistState();
+  _MyReturnState createState() => _MyReturnState();
 }
 
-class _WishlistState extends State<Wishlist> {
+class _MyReturnState extends State<MyReturn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +51,8 @@ class _WishlistState extends State<Wishlist> {
             currentScreen: 'wishlist',
           );
         }
-        return StreamBuilder<QuerySnapshot>(
-            stream: UserAPI.loadWishlist(model.user.uid),
+        return FutureBuilder<DocumentSnapshot<USER>>(
+            future: UserAPI.getUser(model.user.uid),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Text('Something went wrong');
@@ -61,23 +61,95 @@ class _WishlistState extends State<Wishlist> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
-              List<Product> products =
-                  snapshot.data.docs.map((DocumentSnapshot document) {
-                Product product;
-                product = document.data();
-                return product;
-              }).toList();
+              List<Product> products = snapshot.data.data().returns;
               if (products.length == 0) {
-                return WishlistWidget();
+                return NoReturns();
               }
               return ListView.builder(
                   itemCount: products.length,
                   itemBuilder: (BuildContext context, int index) {
                     Product currentProduct = products[index];
-                    return WishListProductContainer(product: currentProduct);
+                    return OrderProducts(product: currentProduct);
                   });
             });
       }),
+    );
+  }
+}
+
+class NoReturns extends StatefulWidget {
+  const NoReturns({Key key}) : super(key: key);
+
+  @override
+  _NoReturnsState createState() => _NoReturnsState();
+}
+
+class _NoReturnsState extends State<NoReturns> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Container(
+          decoration: BoxDecoration(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
+                child: Icon(
+                  Icons.add_shopping_cart,
+                  color: Color(0xFF6B6B6B),
+                  size: 150,
+                ),
+              ),
+              Text(
+                'No Returns Yet !',
+                style: FlutterFlowTheme.bodyText1.override(
+                  fontFamily: 'Poppins',
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                'Looks like you have no returns yet',
+                style: FlutterFlowTheme.bodyText1.override(
+                  fontFamily: 'Poppins',
+                  color: Color(0xFF6B6B6B),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.25,
+              ),
+              FFButtonWidget(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                text: 'Continue Shopping',
+                options: FFButtonOptions(
+                  width: 200,
+                  height: 40,
+                  color: Colors.black,
+                  textStyle: FlutterFlowTheme.subtitle2.override(
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
+                  ),
+                  borderSide: BorderSide(
+                    color: Colors.transparent,
+                    width: 1,
+                  ),
+                  borderRadius: 3,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -94,11 +166,6 @@ class WishListProductContainer extends StatefulWidget {
 class _WishListProductContainerState extends State<WishListProductContainer> {
   bool isAsyncCall = false;
 
-  @override
-  void initState() {
-    FirebaseAnalytics.instance.setCurrentScreen(screenName: 'Wishlist');
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
 import 'package:thrifters_united/customUi/GuestUser.dart';
@@ -54,9 +55,7 @@ class _MyOrdersState extends State<MyOrders> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
-              if (!snapshot.hasData) {
-                return NoOrders();
-              }
+
               List<Order> orders =
                   snapshot.data.docs.map((DocumentSnapshot document) {
                 Order order;
@@ -64,6 +63,9 @@ class _MyOrdersState extends State<MyOrders> {
                 order.orderID = document.id;
                 return order;
               }).toList();
+              if (orders.length == 0) {
+                return NoOrders();
+              }
               return ListView.builder(
                   itemCount: orders.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -89,7 +91,8 @@ class _MyOrdersState extends State<MyOrders> {
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                                 child: Text(
-                                  '${currentOrder.orderedOn.day / currentOrder.orderedOn.month / currentOrder.orderedOn.year}',
+                                  DateFormat.yMMMMd('en_US')
+                                      .format(currentOrder.orderedOn),
                                   style: FlutterFlowTheme.bodyText1.override(
                                     fontFamily: 'Poppins',
                                     color: Color(0xFF6B6B6B),
@@ -161,6 +164,34 @@ class _MyOrdersState extends State<MyOrders> {
                                           width: 70,
                                           height: 100,
                                           fit: BoxFit.cover,
+                                          errorBuilder: (BuildContext context,
+                                              Object exception,
+                                              StackTrace stackTrace) {
+                                            return Container(
+                                              width: 70,
+                                              height: 100,
+                                            );
+                                          },
+                                          loadingBuilder: (BuildContext context,
+                                              Widget child,
+                                              ImageChunkEvent loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes
+                                                    : null,
+                                                color: Colors.black,
+                                              ),
+                                            );
+                                          },
                                         ),
                                       );
                                     })),

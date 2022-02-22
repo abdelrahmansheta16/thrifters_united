@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:googleapis/adsense/v1_4.dart';
 import 'package:thrifters_united/Screens/Mainscreen.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_theme.dart';
 import 'package:thrifters_united/flutter_flow/flutter_flow_widgets.dart';
@@ -33,6 +34,33 @@ class _EmptyCartState extends State<EmptyCart> {
                 ),
                 child: Image.network(
                   'https://www.pngitem.com/pimgs/m/82-828844_empty-cart-icon-png-transparent-png.png',
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace stackTrace) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                    );
+                  },
+                  loadingBuilder: (BuildContext context,
+                      Widget child,
+                      ImageChunkEvent loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress
+                            .expectedTotalBytes !=
+                            null
+                            ? loadingProgress
+                            .cumulativeBytesLoaded /
+                            loadingProgress
+                                .expectedTotalBytes
+                            : null,
+                        color: Colors.black12,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

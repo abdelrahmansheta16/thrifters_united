@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pinch_zoom/pinch_zoom.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thrifters_classes/thrifters_classes.dart';
@@ -159,30 +160,56 @@ class _ProductDetailsState extends State<ProductDetails> {
                     children: [
                       Expanded(
                         child: Container(
-                          width: double.infinity,
-                          height: 500,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.6,
                           child: Stack(
                             children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 50),
-                                child: PageView(
-                                  controller: pageViewController ??=
-                                      PageController(initialPage: 0),
-                                  scrollDirection: Axis.horizontal,
-                                  children: List.generate(
-                                      widget.product.images.length, (index) {
-                                    return Image.network(
+                              PageView(
+                                controller: pageViewController ??=
+                                    PageController(initialPage: 0),
+                                scrollDirection: Axis.horizontal,
+                                children: List.generate(
+                                    widget.product.images.length, (index) {
+                                  return PinchZoom(
+                                    child: Image.network(
                                       widget.product.images[index],
                                       width: 100,
                                       height: 100,
-                                      fit: BoxFit.cover,
-                                    );
-                                  }),
-                                ),
+                                      fit: BoxFit.fill,
+                                      errorBuilder: (BuildContext context,
+                                          Object exception,
+                                          StackTrace stackTrace) {
+                                        return Container(
+                                          width: 100,
+                                          height: 100,
+                                        );
+                                      },
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes
+                                                : null,
+                                            color: Colors.black12,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                }),
                               ),
                               Align(
-                                alignment: AlignmentDirectional(0, 1),
+                                alignment: Alignment.bottomCenter,
                                 child: Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 0, 0, 10),
