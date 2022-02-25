@@ -32,7 +32,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   thrifters_classes:
-    path: ../admin_thrifters/thrifters_classes
+    path: ../adminThrifters/thrifters_classes
 
   cupertino_icons:
   vertical_tabs:

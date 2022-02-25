@@ -919,7 +919,7 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget> {
                                               } catch (e) {
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(SnackBar(
-                                                        content: Text(e)));
+                                                        content: Text(e.toString())));
                                               }
                                               EmailAddress.clear();
                                               Password.clear();

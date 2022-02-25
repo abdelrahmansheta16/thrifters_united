@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>555170871538-1tfg58igbdtr5m65pvii10enbd80ft5t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.555170871538-1tfg58igbdtr5m65pvii10enbd80ft5t</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>555170871538-09s89geqggau70dq5it8d08tbs6j0si6.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAFOJDZYK4QnjbU7zPDHeKl2vTz3FBw6KQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>555170871538</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ThriftersUnited.thriftersUnited</string>
+	<key>PROJECT_ID</key>
+	<string>thrifters-united</string>
+	<key>STORAGE_BUCKET</key>
+	<string>thrifters-united.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:555170871538:ios:cbdde68d834af4bad8386b</string>
+</dict>
+</plist>

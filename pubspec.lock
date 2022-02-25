@@ -1100,7 +1100,7 @@ packages:
   thrifters_classes:
     dependency: "direct main"
     description:
-      path: "../admin_thrifters/thrifters_classes"
+      path: "../adminThrifters/thrifters_classes"
       relative: true
     source: path
     version: "0.0.1"

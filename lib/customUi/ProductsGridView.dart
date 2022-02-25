@@ -28,8 +28,7 @@ class _ProductsGridViewState extends State<ProductsGridView> {
               crossAxisSpacing: 1,
               mainAxisSpacing: 1,
               childAspectRatio: ((MediaQuery.of(context).size.width) /
-                      (MediaQuery.of(context).size.height)) +
-                  0.1,
+                      (MediaQuery.of(context).size.height)),
             ),
             itemCount: model.filteredProducts.length.isEven
                 ? model.filteredProducts.length
