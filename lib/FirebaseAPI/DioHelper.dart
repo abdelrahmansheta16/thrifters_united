@@ -6,7 +6,7 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://free.currconv.com',
+        baseUrl: 'https://v6.exchangerate-api.com',
         receiveDataWhenStatusError: true,
       ),
     );
@@ -15,14 +15,14 @@ class DioHelper {
   static getData() async {
     init();
     await dio.get(
-      '/api/v7/convert',
-      queryParameters: {
-        'q': 'EGP_USD',
-        'compact': 'ultra',
-        'apiKey': '808d6e3d9f97ccc6821d',
-      },
+      '/v6/815a899e0965ee3c559bf89c/pair/EGP/USD',
+      // queryParameters: {
+      //   'q': 'EGP_USD',
+      //   'compact': 'ultra',
+      //   'apiKey': '808d6e3d9f97ccc6821d',
+      // },
     ).then((value) {
-      convertRate = value.data['EGP_USD'];
+      convertRate = value.data['conversion_rate'];
     }).catchError((onError) {
       print(onError);
     });

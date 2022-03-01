@@ -19,6 +19,7 @@ import 'package:googleapis/people/v1.dart' as gas;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/FirebaseAPI/AuthenticationAPI.dart';
+import 'package:thrifters_united/FirebaseAPI/DioHelper.dart';
 import 'package:thrifters_united/FirebaseAPI/FilterProvider.dart';
 import 'package:thrifters_united/FirebaseAPI/LocationProvider.dart';
 import 'package:thrifters_united/FirebaseAPI/OrderAPI.dart';
@@ -170,6 +171,7 @@ class _MyAppState extends State<MyApp> {
     FirebaseAuth.instance.authStateChanges().listen((event) {
       Provider.of<AuthenticationAPI>(context, listen: false).setUser(event);
     });
+    DioHelper.getData();
     googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
       setState(() {
         _currentUser = account;

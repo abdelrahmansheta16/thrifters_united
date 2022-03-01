@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:555170871538:android:35c325ffd904a9fcd8386b",
+        "mobilesdk_app_id": "1:555170871538:android:8c452009a30913fad8386b",
         "android_client_info": {
-          "package_name": "com.thriftersUnited.thrifters_united"
+          "package_name": "com.example.admin_thrifters"
         }
       },
       "oauth_client": [
         {
-          "client_id": "555170871538-09s89geqggau70dq5it8d08tbs6j0si6.apps.googleusercontent.com",
+          "client_id": "555170871538-64l6p6i7pfv8is5bpo1ur6on1hf8dsra.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.thriftersUnited.thrifters_united",
+            "package_name": "com.example.admin_thrifters",
             "certificate_hash": "c5c273469555e136f3e1728cc6ce6eeb0feefdc5"
           }
         },
@@ -29,6 +29,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyB--Qums_5yz-SAwyR40zP71r5a9I3FoRc"
+        },
+        {
+          "current_key": "AIzaSyBYOaHfr2OWReJN2kM_wtb9NULIGISUKzk"
         }
       ],
       "services": {
@@ -37,6 +40,99 @@
             {
               "client_id": "555170871538-e11skfd9heo73e30dltpnpp87obet1hq.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "555170871538-1tfg58igbdtr5m65pvii10enbd80ft5t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ThriftersUnited.thriftersUnited"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555170871538:android:35c325ffd904a9fcd8386b",
+        "android_client_info": {
+          "package_name": "com.example.thrifters_united"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555170871538-ctp4k54f22u2mvp1ltp6f91qt63n5ks8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thrifters_united",
+            "certificate_hash": "b7f6f07df0efd2e275e4817ad4a1966d77564a07"
+          }
+        },
+        {
+          "client_id": "555170871538-e11skfd9heo73e30dltpnpp87obet1hq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB--Qums_5yz-SAwyR40zP71r5a9I3FoRc"
+        },
+        {
+          "current_key": "AIzaSyBYOaHfr2OWReJN2kM_wtb9NULIGISUKzk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555170871538-e11skfd9heo73e30dltpnpp87obet1hq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "555170871538-1tfg58igbdtr5m65pvii10enbd80ft5t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ThriftersUnited.thriftersUnited"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555170871538:android:94dbb03ae37608d3d8386b",
+        "android_client_info": {
+          "package_name": "com.thriftersUnited.thrifters_united"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555170871538-e11skfd9heo73e30dltpnpp87obet1hq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB--Qums_5yz-SAwyR40zP71r5a9I3FoRc"
+        },
+        {
+          "current_key": "AIzaSyBYOaHfr2OWReJN2kM_wtb9NULIGISUKzk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555170871538-e11skfd9heo73e30dltpnpp87obet1hq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "555170871538-1tfg58igbdtr5m65pvii10enbd80ft5t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ThriftersUnited.thriftersUnited"
+              }
             }
           ]
         }

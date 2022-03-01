@@ -115,7 +115,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    DioHelper.getData();
     FilterProvider.of(context, listen: false).setUsers();
     FilterProvider.of(context, listen: false).setCategories();
     FilterProvider.of(context, listen: false).setBrands();
@@ -180,6 +179,7 @@ class _MainScreenState extends State<MainScreen> {
           showDialog(
             useRootNavigator: false,
             useSafeArea: false,
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) => _buildPopupDialog(context),
           );
