@@ -90,53 +90,61 @@ class _AddAddressState extends State<AddAddress> {
               children: [
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFEEEEEE),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                              'assets/images/googlemaps.jpg',
+                  child: InkWell(
+                    onTap: ()async {
+                      await Navigator.pushNamed(context,
+                          '/profile/MyAddresses/AddAddress/Maps',
+                          arguments:
+                          FirebaseAuth.instance.currentUser.uid);
+                    },
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFEEEEEE),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage(
+                                'assets/images/googlemaps.jpg',
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        bottom: -20,
-                        left: 0,
-                        right: 0,
-                        child: Center(
-                          child: FFButtonWidget(
-                            onPressed: () async {
-                              await Navigator.pushNamed(context,
-                                  '/profile/MyAddresses/AddAddress/Maps',
-                                  arguments:
-                                      FirebaseAuth.instance.currentUser.uid);
-                            },
-                            text: 'Add Location',
-                            options: FFButtonOptions(
-                              width: 130,
-                              height: 40,
-                              color: Colors.black,
-                              textStyle: FlutterFlowTheme.subtitle2.override(
-                                fontFamily: 'Poppins',
-                                color: Colors.white,
+                        Positioned(
+                          bottom: -20,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: FFButtonWidget(
+                              onPressed: () async {
+                                await Navigator.pushNamed(context,
+                                    '/profile/MyAddresses/AddAddress/Maps',
+                                    arguments:
+                                        FirebaseAuth.instance.currentUser.uid);
+                              },
+                              text: 'Add Location',
+                              options: FFButtonOptions(
+                                width: 130,
+                                height: 40,
+                                color: Colors.black,
+                                textStyle: FlutterFlowTheme.subtitle2.override(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.white,
+                                ),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1,
+                                ),
+                                borderRadius: 12,
                               ),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 1,
-                              ),
-                              borderRadius: 12,
                             ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 TextFormField(

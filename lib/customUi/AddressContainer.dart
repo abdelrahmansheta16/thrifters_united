@@ -54,7 +54,7 @@ class _AddressContainerState extends State<AddressContainer> {
                       },
                     ),
                     title: Text(
-                      address.addressID,
+                      address.addressName,
                       style: FlutterFlowTheme.title3.override(
                         fontFamily: 'Poppins',
                         fontSize: 16,

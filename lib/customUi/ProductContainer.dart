@@ -209,7 +209,7 @@ class _ProductContainerState extends State<ProductContainer> {
                   ),
                 ),
                 Text(
-                  widget.product.productId ?? '',
+                  widget.product.brand.name ?? '',
                   style: FlutterFlowTheme.bodyText1.override(
                     fontFamily: 'Poppins',
                   ),

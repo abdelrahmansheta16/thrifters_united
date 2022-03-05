@@ -348,6 +348,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     userId = ModalRoute.of(context).settings.arguments.toString();
     return Scaffold(
+      backgroundColor: Colors.white,
       body: position != null && _cameraPosition != null
           ? buildMap()
           : Center(

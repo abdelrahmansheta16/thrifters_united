@@ -82,8 +82,9 @@ class _MainScreenState extends State<MainScreen> {
   Future<void> setupInteractedMessage() async {
     // Get any messages which caused the application to open from
     // a terminated state.
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
     RemoteMessage initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
+        await messaging.getInitialMessage();
 
     // If the message also contains a data property with a "type" of "chat",
     // navigate to a chat screen
@@ -91,9 +92,7 @@ class _MainScreenState extends State<MainScreen> {
       _handleMessage(initialMessage);
     }
 
-    // Also handle any interaction when the app is in the background via a
-    // Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+
   }
 
   void _handleMessage(RemoteMessage message) {
@@ -125,6 +124,10 @@ class _MainScreenState extends State<MainScreen> {
       initialLink = value;
     });
     _handleLink(initialLink);
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+
     FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
       if (dynamicLinkData.link.path == '/post') {
         print(dynamicLinkData.link.toString());

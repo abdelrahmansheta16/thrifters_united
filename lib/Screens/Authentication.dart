@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_united/pages/Authentication/SIGN%20IN.dart';
@@ -483,10 +484,10 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget> {
                                     child: FFButtonWidget(
                                       onPressed: () async {
                                         if (_formKey1.currentState.validate()) {
+                                          setState(() {
+                                            authenticationShowSpinner = true;
+                                          });
                                           try {
-                                            setState(() {
-                                              authenticationShowSpinner = true;
-                                            });
                                             await Provider.of<
                                                         AuthenticationAPI>(
                                                     context,
@@ -498,17 +499,18 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget> {
                                               authenticationShowSpinner = false;
                                             });
                                             Navigator.pop(context);
+                                            EmailController.clear();
+                                            PasswordController.clear();
+                                            final BottomNavigationBar
+                                            navigationBar =
+                                                globalKey.currentWidget;
+                                            navigationBar.onTap(0);
                                           } catch (e) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                                    SnackBar(content: Text(e)));
+                                            Fluttertoast.showToast(msg: 'Invalid Username or Password');
+                                            setState(() {
+                                              authenticationShowSpinner = false;
+                                            });
                                           }
-                                          EmailController.clear();
-                                          PasswordController.clear();
-                                          final BottomNavigationBar
-                                              navigationBar =
-                                              globalKey.currentWidget;
-                                          navigationBar.onTap(0);
                                         }
                                       },
                                       text: 'SIGN IN',
@@ -896,11 +898,12 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget> {
                                           onPressed: () async {
                                             if (_formKey2.currentState
                                                 .validate()) {
+                                              setState(() {
+                                                authenticationShowSpinner =
+                                                true;
+                                              });
                                               try {
-                                                setState(() {
-                                                  authenticationShowSpinner =
-                                                      true;
-                                                });
+
                                                 await Provider.of<
                                                             AuthenticationAPI>(
                                                         context,
@@ -913,17 +916,23 @@ class _AuthenticationWidgetState extends State<AuthenticationWidget> {
                                                   selectedValue,
                                                 );
                                                 setState(() {
-                                                  authenticationShowSpinner =
-                                                      false;
+                                                  authenticationShowSpinner = false;
                                                 });
+                                                EmailAddress.clear();
+                                                Password.clear();
+                                                Navigator.pop(context);
+                                                final BottomNavigationBar
+                                                navigationBar =
+                                                    globalKey.currentWidget;
+                                                navigationBar.onTap(0);
                                               } catch (e) {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                        content: Text(e.toString())));
+                                                Fluttertoast.showToast(msg: 'Something Went Wrong');
+                                                setState(() {
+                                                  authenticationShowSpinner =
+                                                  false;
+                                                });
                                               }
-                                              EmailAddress.clear();
-                                              Password.clear();
-                                              Navigator.pop(context);
+
                                             }
                                           },
                                           text: 'SIGN UP',

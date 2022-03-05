@@ -182,19 +182,25 @@ class _MyAppState extends State<MyApp> {
     });
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     messaging
-        .requestPermission(
-          alert: true,
-          announcement: false,
-          badge: true,
-          carPlay: false,
-          criticalAlert: false,
-          provisional: true,
-          sound: true,
-        )
-        .then((value) =>
-            print('User granted permission: ${value.authorizationStatus}'));
+    .requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: true,
+        sound: true,
+    ).then((settings) {
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        print('User granted permission');
+      } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+        print('User granted provisional permission');
+      } else {
+        print('User declined or has not accepted permission');
+      }
+    });
 
-    messaging.setForegroundNotificationPresentationOptions(
+     FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
       badge: true,
       sound: true,

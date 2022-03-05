@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:thrifters_classes/thrifters_classes.dart';
 import 'package:thrifters_united/FirebaseAPI/UserAPI.dart';
@@ -424,25 +425,32 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ),
                                 Divider(),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
-                                      child: Icon(
-                                        Icons.chat_bubble_outline_sharp,
-                                        color: Colors.black,
-                                        size: 24,
-                                      ),
+                                InkWell(
+                                  onTap: (){
+                                    Fluttertoast.showToast(msg: 'currently unavailabla');
+                                  },
+                                  child: Container(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(0, 5, 5, 5),
+                                          child: Icon(
+                                            Icons.chat_bubble_outline_sharp,
+                                            color: Colors.black,
+                                            size: 24,
+                                          ),
+                                        ),
+                                        Text(
+                                          'FAQs  &  Contact Us',
+                                          style:
+                                              FlutterFlowTheme.bodyText1.override(
+                                            fontFamily: 'Poppins',
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                    Text(
-                                      'FAQs  &  Contact Us',
-                                      style:
-                                          FlutterFlowTheme.bodyText1.override(
-                                        fontFamily: 'Poppins',
-                                      ),
-                                    )
-                                  ],
+                                  ),
                                 )
                               ],
                             ),

@@ -96,7 +96,7 @@ class CartProductContainer extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            product.productId,
+                            product.title,
                             style: FlutterFlowTheme.subtitle1.override(
                               fontFamily: 'Lexend Deca',
                               color: Color(0xFF111417),
